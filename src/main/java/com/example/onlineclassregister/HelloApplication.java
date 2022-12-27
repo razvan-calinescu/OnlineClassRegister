@@ -28,10 +28,6 @@ public class HelloApplication extends Application {
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
 
-        Statement stmt = conn.createStatement();
-        ResultSet res = stmt.executeQuery("Select * from users");
-        while(res.next())
-            System.out.println(res.getString(2));
 
         conn.close();
 

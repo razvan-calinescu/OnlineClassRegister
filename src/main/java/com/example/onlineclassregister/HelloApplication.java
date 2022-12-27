@@ -1,11 +1,16 @@
 package com.example.onlineclassregister;
 
+import conn.dbConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class HelloApplication extends Application {
     @Override
@@ -17,7 +22,19 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+
+
+        dbConnection dbConn = new dbConnection();
+        Connection conn = dbConn.getConnection();
+
+        Statement stmt = conn.createStatement();
+        ResultSet res = stmt.executeQuery("Select * from users");
+        while(res.next())
+            System.out.println(res.getString(2));
+
+        conn.close();
+
         launch();
     }
 }

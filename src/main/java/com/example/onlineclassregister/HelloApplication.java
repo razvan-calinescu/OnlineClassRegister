@@ -11,8 +11,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.onlineclassregister.Teacher.getTeachers;
 
 public class HelloApplication extends Application {
+
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
@@ -21,16 +27,25 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    
 
     public static void main(String[] args) throws SQLException {
 
 
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
+        
+        ///declare variables
+        List<Teacher> teachers = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
+        
+        ///Init data
+       teachers=getTeachers();
 
+        System.out.println(teachers.get(0).fName);
+        
+        launch();
 
         conn.close();
-
-        launch();
     }
 }

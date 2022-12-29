@@ -3,7 +3,7 @@ package com.example.onlineclassregister;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course {
+public class Course implements failable{
 
     int id, teacherId;
     List<Student> studentsEnrolled = new ArrayList<>();
@@ -14,5 +14,11 @@ public class Course {
         this.teacherId = teacherId;
         this.studentsEnrolled = studentsEnrolled;
         this.teachers = teachers;
+    }
+
+    @Override
+    public boolean isFailed() {
+        System.out.println("add code for failable in course class");
+        return false;
     }
 }

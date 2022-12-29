@@ -1,20 +1,18 @@
 package com.example.onlineclassregister;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Course implements failable{
 
-    int id, teacherId;
-    List<Student> studentsEnrolled = new ArrayList<>();
-    List<Teacher> teachers = new ArrayList<>();
 
-    public Course(int id, int teacherId, List<Student> studentsEnrolled, List<Teacher> teachers) {
-        this.id = id;
-        this.teacherId = teacherId;
-        this.studentsEnrolled = studentsEnrolled;
-        this.teachers = teachers;
-    }
+   /// dictionar - elev cu lista de note
+    /// dictionar - elev cu absente
+
+    ///NU STERGE
+   Map<Student, Double> grades = new HashMap<>();
+   Map<Student, Integer> attendance = new HashMap<>();
+   List<Student> enrolledStudents = new ArrayList<>();
+   Teacher teacher;
 
     @Override
     public boolean isFailed() {

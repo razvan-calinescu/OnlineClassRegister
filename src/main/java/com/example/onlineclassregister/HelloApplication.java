@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.onlineclassregister.Student.getStudents;
 import static com.example.onlineclassregister.Teacher.getTeachers;
 
 public class HelloApplication extends Application {
@@ -41,8 +42,12 @@ public class HelloApplication extends Application {
         
         ///Init data
        teachers=getTeachers();
+        if(teachers.size()==0)
+            throw new RuntimeException("Teachers list empty;");
 
-        System.out.println(teachers.get(0).fName);
+       students=getStudents();
+       if(students.size()==0)
+           throw new RuntimeException("Students list empty;");
         
         launch();
 

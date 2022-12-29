@@ -39,7 +39,7 @@ public class Teacher extends SchoolPerson{
             Statement stmt  = conn.createStatement();
             ResultSet rs;
 
-            rs=stmt.executeQuery("Select * FROM teacher teacher\n" +
+            rs=stmt.executeQuery("Select * FROM teacher\n" +
                     "INNER JOIN users ON\n" +
                     "teacher.userId = users.id");
             while(rs.next())
@@ -71,7 +71,8 @@ public class Teacher extends SchoolPerson{
 
         } catch (SQLException e)
         {
-            System.out.println("SQL statement creation error: "+e.getStackTrace());
+            System.out.println("SQL statement creation error: ");
+            e.printStackTrace();
         }
 
         return aux;

@@ -44,6 +44,14 @@ public class adminController {
     @FXML
     private ListView<String> classesList;
 
+    @FXML
+    private Button register;
+
+    public void registerView(){
+
+
+    }
+
     public void initialize() {
 
         Teacher admin = null;

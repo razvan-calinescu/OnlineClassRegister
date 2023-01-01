@@ -3,13 +3,17 @@ package com.example.onlineclassregister;
 import conn.dbConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,8 +64,7 @@ public class loginController {
         return false;
     }
 
-    public void loginButton(ActionEvent e)
-    {
+    public void loginButton(ActionEvent e) throws IOException {
         Boolean emailCheck= false, passwordCheck=true;
         if(emailInputField.getText().isBlank())
         wrongEmail.setText("Please provide a correct email");
@@ -92,8 +95,24 @@ public class loginController {
             statusMessage.setText("Logged in successfully! You'll now be redirected to your account.");
             statusMessage.setTextFill(Paint.valueOf("green"));
 
+            loggedUser.mail= emailInputField.getText();
+            Stage stage = (Stage) loginExitButton.getScene().getWindow();
+            stage.close();
+            changeWindow();
+
         }
 
+    }
+
+    private void changeWindow() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("adminTeacher.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("ClassRegister | Teacher Admin");
+        stage.setScene(scene);
+        stage.show();
     }
 
     private int attemptLogin(String email, String password) {
@@ -104,19 +123,20 @@ public class loginController {
 
         md5 md5Helper = new md5();
         String hashedPassword = md5Helper.getMd5(password);
-        int countRes=0;
+        int countRes=0, userId=0;
 
         try{
             Statement stmt = conn.createStatement();
             ResultSet res;
 
-            res=stmt.executeQuery("Select mail, password from users where LOWER(mail)='"+email+"' and password='"+hashedPassword+"'");
+            res=stmt.executeQuery("Select id, mail, password from users where LOWER(mail)='"+email+"' and password='"+hashedPassword+"'");
 
 
             while(res.next())
             {
                 countRes++;
                 System.out.println(res.getString("mail"));
+                userId=res.getInt("id");
             }
 
             conn.close();
@@ -127,7 +147,11 @@ public class loginController {
 
 
         if(countRes==1)
+        {
+            loggedUser.userId=userId;
             return 1;
+
+        }
         else
         return 0;
 

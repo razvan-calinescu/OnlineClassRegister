@@ -6,9 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Teacher extends SchoolPerson{
 
@@ -16,7 +14,9 @@ public class Teacher extends SchoolPerson{
     int subjectId, weeklyClasses, classTeacherId, isAdmin, teacherId, classesCount; //classesCount = cate clase are in TOTAL, gen 3 daca are o a 9a, 2 a 10a etc
     List<Integer> ClassesId = new ArrayList<>();
 
-    public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int isAdmin, int teacherId, int classesCount, List<Integer> classes) {
+    Map<Integer, String> classesName = new HashMap<>();
+
+    public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int isAdmin, int teacherId, int classesCount, List<Integer> classes, Map<Integer, String> classesNames) {
         super(fName, lName, id, role, mail, phone, birthDate);
         this.subjectId = subjectId;
         this.weeklyClasses = weeklyClasses;
@@ -25,6 +25,7 @@ public class Teacher extends SchoolPerson{
         this.teacherId = teacherId;
         this.classesCount = classesCount;
         ClassesId = classes;
+        classesName = classesNames;
     }
 
     public static List<Teacher> getTeachers()
@@ -65,8 +66,25 @@ public class Teacher extends SchoolPerson{
                 String auxPhone=rs.getString("phone");
                 Date auxBDate=rs.getDate("birthDate");
 
-                auxT = new Teacher(auxFName, auxLName, auxUserId, auxRole, auxMail, auxPhone, auxBDate, auxSubjId, auxWeeklyClasses, auxClassTeacherId, auxIsAdmin, auxTeacherId, auxClassesCount, auxClasses );
+                Map<Integer, String> auxClassesName = new HashMap<>();
+
+                    Statement stmt2=conn.createStatement();
+                    ResultSet rs2=stmt2.executeQuery("Select * FROM class");
+
+                    while(rs2.next())
+                    {
+                        String className=rs2.getString("name");
+                        Integer classId = rs2.getInt("id");
+
+                        if(auxClasses.contains(classId))
+                            auxClassesName.put(classId, className);
+
+                    }
+
+
+                auxT = new Teacher(auxFName, auxLName, auxUserId, auxRole, auxMail, auxPhone, auxBDate, auxSubjId, auxWeeklyClasses, auxClassTeacherId, auxIsAdmin, auxTeacherId, auxClassesCount, auxClasses, auxClassesName );
                 aux.add(auxT);
+
             }
 
         } catch (SQLException e)

@@ -30,6 +30,8 @@ public class Student extends SchoolPerson{
         this.coursesAttended = coursesAttended;
     }
 
+
+
     public static List<Student> getStudents(){
 
         List<Student> aux= new ArrayList<>();

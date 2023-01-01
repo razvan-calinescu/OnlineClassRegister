@@ -76,7 +76,7 @@
                   <Font name="Century Gothic" size="13.0" />
                </font>
             </TextField>
-            <Button fx:id="loginButton" layoutX="126.0" layoutY="359.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="198.0" style="-fx-background-color: #66bbc4; -fx-font-size: 1.5em; -fx-font-weight: bold;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="126.0" layoutY="359.0" mnemonicParsing="false" onAction="#loginButton" prefHeight="38.0" prefWidth="198.0" style="-fx-background-color: #66bbc4; -fx-font-size: 1.5em; -fx-font-weight: bold;" text="Login" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="20.0" />
                </font>
@@ -86,6 +86,21 @@
                   <Font name="Century Gothic Bold" size="20.0" />
                </font>
             </Button>
+            <Label fx:id="wrongEmail" layoutX="175.0" layoutY="266.0" prefHeight="18.0" prefWidth="213.0" textFill="RED">
+               <font>
+                  <Font name="Century Gothic" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="wrongPassword" layoutX="175.0" layoutY="317.0" prefHeight="18.0" prefWidth="213.0" textFill="RED">
+               <font>
+                  <Font name="Century Gothic" size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusMessage" alignment="CENTER" layoutX="67.0" layoutY="335.0" prefHeight="18.0" prefWidth="333.0" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="10.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>

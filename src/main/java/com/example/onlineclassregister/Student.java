@@ -6,9 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Student extends SchoolPerson{
 
@@ -88,4 +86,33 @@ public class Student extends SchoolPerson{
 
         return aux;
     }
+
+//    public static Map<String, java.sql.Date> getGrades(int studentId)
+//    {
+//            Map<String, java.sql.Date> aux = new HashMap<>();
+//
+//            dbConnection dbConnection = new dbConnection();
+//            Connection conn = dbConnection.getConnection();
+//
+//            String SQL="Select * from register"+studentId;
+//
+//            try{
+//
+//                Statement stmt = conn.createStatement();
+//                ResultSet res= stmt.executeQuery(SQL);
+//
+////                while(res.next())
+////                {
+////                    if(res.getInt("isGrade")==1)
+////                    {
+////
+////                    }
+////                }
+//
+//            }catch (SQLException e){
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//    }
 }

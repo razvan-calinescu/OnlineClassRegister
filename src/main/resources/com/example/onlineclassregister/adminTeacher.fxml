@@ -147,7 +147,7 @@
                   <Font name="Century Gothic" size="13.0" />
                </font>
             </Label>
-            <ListView fx:id="classesList" layoutX="186.0" layoutY="405.0" prefHeight="273.0" prefWidth="200.0" />
+            <ListView fx:id="classesList" layoutX="186.0" layoutY="405.0" prefHeight="273.0" prefWidth="200.0" stylesheets="@style.css" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="209.0" layoutY="340.0" prefHeight="51.0" prefWidth="150.0" text="Your Classes:" textAlignment="CENTER" textFill="#080808" wrapText="true">
                <font>
                   <Font name="Century Gothic Bold" size="13.0" />

@@ -2,11 +2,15 @@ package com.example.onlineclassregister;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,8 +51,19 @@ public class adminController {
     @FXML
     private Button register;
 
-    public void registerView(){
+    public void registerView() throws IOException {
 
+        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
+        stageToClose.close();
+
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("register.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("ClassRegister | Register");
+        stage.setScene(scene);
+        stage.show();
 
     }
 

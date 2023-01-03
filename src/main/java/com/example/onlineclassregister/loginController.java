@@ -105,6 +105,8 @@ public class loginController {
     }
 
     private void changeWindow() throws IOException {
+
+
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("adminTeacher.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 850, 700);
 

@@ -66,7 +66,10 @@ public class registerController {
     @FXML
     private Text studentAlert;
 
-    public void addGradeClick(){
+    private Student currentStudent;
+    private Teacher currentTeacher;
+
+    public void addGradeClick() throws IOException {
 
         if(gradedUser.id==-1)
             studentAlert.setFill(Paint.valueOf("Red"));
@@ -74,6 +77,43 @@ public class registerController {
             studentAlert.setFill(Paint.valueOf("White"));
 
 
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addGrade.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("ClassRegister | Add Grade");
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        if(gradedUser.grade!=-1) {
+
+            List<Teacher> aux = Teacher.getTeachers();
+
+            for(Teacher t: aux)
+                if(t.userId==loggedUser.userId)
+                    currentTeacher=t;
+
+
+
+            String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isGrade, date, gradeValue) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE, " + gradedUser.grade + " ) ";
+
+            dbConnection dbConn = new dbConnection();
+            Connection conn = dbConn.getConnection();
+
+            try {
+
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(SQL);
+                getStudentById2();
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+
+        }
 
     }
 
@@ -110,7 +150,7 @@ public class registerController {
         int id= Integer.parseInt(studentId.getText());
         List<Student> students= Student.getStudents();
 
-        Student currentStudent;
+
 
         for(Student s: students)
             if(s.userId==id) {
@@ -119,6 +159,69 @@ public class registerController {
 
                 gradedUser.id=s.userId;
                 gradedUser.studentId=s.studId;
+
+                String SQL="Select * from register"+currentStudent.userId+" WHERE teacherId="+loggedUser.userId;
+
+                Map<Integer, String> subjectIdName = new HashMap<>();
+                subjectIdName = Subject.initSubject();
+
+                try{
+
+                    gradesList.getItems().clear();
+                    absenceList.getItems().clear();
+
+                    dbConnection dbConn = new dbConnection();
+                    Connection conn = dbConn.getConnection();
+
+                    Statement stmt= conn.createStatement();
+                    ResultSet res= stmt.executeQuery(SQL);
+
+                    String rowGrades="", rowAbsence="";
+                    while(res.next()){
+                        rowGrades="";
+                        rowAbsence="";
+
+                        if(res.getInt("isGrade")==1) {
+                            rowGrades += subjectIdName.get(res.getInt("subjectId")) + ": " + res.getInt("gradeValue") + " / " + res.getDate("date");
+                            gradesList.getItems().add(rowGrades);
+                        }
+
+                        if(res.getInt("isAbsence")==1){
+                            rowAbsence+=subjectIdName.get(res.getInt("subjectId"))+ ": Absent" + " / " + res.getDate("date");
+                            if(res.getInt("motivated")==1)
+                                rowAbsence+=" - Motivated";
+
+                            absenceList.getItems().add(rowAbsence);
+
+                        }
+                    }
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            else {
+                gradesList.getItems().clear();
+                absenceList.getItems().clear();
+                currentSituationHead.setText("User not found");
+            }
+
+
+    }
+
+    public void getStudentById2() throws SQLException{
+
+
+        int id= Integer.parseInt(studentId.getText());
+        List<Student> students= Student.getStudents();
+
+
+
+        for(Student s: students)
+            if(s.userId==id) {
+                currentStudent=s;
+
 
                 String SQL="Select * from register"+currentStudent.userId+" WHERE teacherId="+loggedUser.userId;
 

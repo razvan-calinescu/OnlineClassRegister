@@ -72,22 +72,7 @@ public class addGradeController {
     private void addButtonClick(){
 
         double grade = Double.parseDouble(gradeField.getText());
-
-
-        String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isGrade, date, gradeValue) VALUES ("+ activeStudent.userId + ", " + activeStudent.classId + ", "+ activeTeacher.teacherId + ", "+ activeTeacher.subjectId+", 1, CURRENT_DATE, "+ grade +" ) ";
-
-        dbConnection dbConn = new dbConnection();
-        Connection conn =dbConn.getConnection();
-
-        try{
-
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(SQL);
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        gradedUser.grade=grade;
 
 
         Stage stageToClose = (Stage) addButton.getScene().getWindow();
@@ -98,6 +83,7 @@ public class addGradeController {
     @FXML
     private void cancelButtonClick(){
 
+        gradedUser.grade=-1;
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
 

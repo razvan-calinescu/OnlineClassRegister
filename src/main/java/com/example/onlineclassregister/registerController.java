@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -62,6 +63,20 @@ public class registerController {
     @FXML
     private ListView<String> absenceList;
 
+    @FXML
+    private Text studentAlert;
+
+    public void addGradeClick(){
+
+        if(gradedUser.id==-1)
+            studentAlert.setFill(Paint.valueOf("Red"));
+        else
+            studentAlert.setFill(Paint.valueOf("White"));
+
+
+
+    }
+
 
     public void getClassById() throws SQLException {
 
@@ -88,6 +103,10 @@ public class registerController {
 
     public void getStudentById() throws SQLException{
 
+        gradedUser.id=-1;
+        gradedUser.studentId=-1;
+        gradedUser.grade=-1;
+
         int id= Integer.parseInt(studentId.getText());
         List<Student> students= Student.getStudents();
 
@@ -97,12 +116,19 @@ public class registerController {
             if(s.userId==id) {
                 currentSituationHead.setText("Current Situation for " + s.fName + " " + s.lName);
                 currentStudent=s;
+
+                gradedUser.id=s.userId;
+                gradedUser.studentId=s.studId;
+
                 String SQL="Select * from register"+currentStudent.userId+" WHERE teacherId="+loggedUser.userId;
 
                 Map<Integer, String> subjectIdName = new HashMap<>();
                 subjectIdName = Subject.initSubject();
 
                 try{
+
+                    gradesList.getItems().clear();
+                    absenceList.getItems().clear();
 
                     dbConnection dbConn = new dbConnection();
                     Connection conn = dbConn.getConnection();
@@ -135,8 +161,10 @@ public class registerController {
                 }
 
             }
-           else {
-               currentSituationHead.setText("User not found");
+            else {
+                gradesList.getItems().clear();
+                absenceList.getItems().clear();
+                currentSituationHead.setText("User not found");
             }
 
 
@@ -162,6 +190,8 @@ public class registerController {
     public void initialize() {
 
         Teacher teacher = null;
+
+        studentAlert.setFill(Paint.valueOf("White"));
 
         List<Teacher> teachers = new ArrayList<>();
         List<Student> students = new ArrayList<>();

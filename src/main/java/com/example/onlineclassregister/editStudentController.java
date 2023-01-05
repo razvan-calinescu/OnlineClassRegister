@@ -42,11 +42,52 @@ public class editStudentController {
     @FXML
     private DatePicker dob;
 
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private Button deleteConfirmButton;
+
+
+    @FXML
+    public void deleteButtonClick(){
+
+        deleteConfirmButton.setDisable(false);
+        deleteConfirmButton.setOpacity(100);
+        deleteButton.setDisable(true);
+        deleteButton.setOpacity(0);
+
+    }
+
+    @FXML
+    public void deleteConfirmButton() {
+
+        String SQL= "Delete from users where id= "+ student.userId+";";
+
+        dbConnection dbConn =new dbConnection();
+        Connection conn = dbConn.getConnection();
+
+        try{
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(SQL);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+
+
+    }
+
 
 
     @FXML
     public void initialize(Student s){
         title.setText("You'll now be editing "+s.fName+ " "+ s.lName);
+        deleteConfirmButton.setDisable(true);
+        deleteConfirmButton.setOpacity(0);
     }
 
     public void setStudent(Student s) {
@@ -127,4 +168,6 @@ public class editStudentController {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
+
+
 }

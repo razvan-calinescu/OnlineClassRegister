@@ -41,20 +41,8 @@ public class HelloApplication extends Application {
 
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
-        
-        ///declare variables
-        List<Teacher> teachers = new ArrayList<>();
-        List<Student> students = new ArrayList<>();
-        
-        ///Init data
-       teachers=getTeachers();
-        if(teachers.size()==0)
-            throw new RuntimeException("Teachers list empty;");
 
-       students=getStudents();
-       if(students.size()==0)
-           throw new RuntimeException("Students list empty;");
-        
+
         launch();
 
         conn.close();

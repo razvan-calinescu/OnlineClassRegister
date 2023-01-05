@@ -416,12 +416,8 @@ public class registerController {
         List<Student> students = new ArrayList<>();
 
         teachers=getTeachers();
-        if(teachers.size()==0)
-            throw new RuntimeException("Teachers list empty;");
-
         students=getStudents();
-        if(students.size()==0)
-            throw new RuntimeException("Students list empty;");
+
 
         for(Teacher t: teachers)
             if(loggedUser.userId==t.userId )

@@ -65,17 +65,7 @@
                </font>
             </Button>
             <Label fx:id="dateBar" alignment="CENTER" layoutX="-1.0" prefHeight="34.0" prefWidth="518.0" style="-fx-background-color: #66bbc4;" text="lname" textFill="WHITE" />
-            <Button fx:id="addStudent" layoutX="44.0" layoutY="599.0" maxHeight="46.0" maxWidth="130.0" minHeight="30.4" minWidth="83.2" mnemonicParsing="false" prefHeight="41.0" prefWidth="126.0" style="-fx-background-color: #66bbc4; -fx-background-radius: 25; -fx-border-radius: 25;" text="Add Student" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="addGrade1" layoutX="406.0" layoutY="598.0" maxHeight="46.0" maxWidth="130.0" minHeight="30.4" minWidth="83.2" mnemonicParsing="false" prefHeight="41.0" prefWidth="126.0" style="-fx-background-color: #66bbc4; -fx-background-radius: 25; -fx-border-radius: 25;" text="Remove Student" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="editStudent" layoutX="223.0" layoutY="598.0" maxHeight="46.0" maxWidth="130.0" minHeight="30.4" minWidth="83.2" mnemonicParsing="false" prefHeight="41.0" prefWidth="126.0" style="-fx-background-color: #66bbc4; -fx-background-radius: 25; -fx-border-radius: 25;" text="Edit Student" textFill="WHITE">
+            <Button fx:id="addStudent" layoutX="221.0" layoutY="585.0" maxHeight="46.0" maxWidth="130.0" minHeight="30.4" minWidth="83.2" mnemonicParsing="false" onAction="#addStudentClick" prefHeight="41.0" prefWidth="126.0" style="-fx-background-color: #66bbc4; -fx-background-radius: 25; -fx-border-radius: 25;" text="Add Student" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="12.0" />
                </font>
@@ -89,39 +79,33 @@
                <children>
                   <TextField fx:id="filterField" layoutX="8.0" layoutY="14.0" prefHeight="29.0" prefWidth="171.0" promptText="   Search" style="-fx-background-radius: 25; -fx-border-radius: 25; -fx-background-color: #fff; -fx-border-color: #fff;" />
                   <ListView fx:id="id" layoutX="14.0" layoutY="90.0" prefHeight="333.0" prefWidth="31.0" />
-                  <ListView fx:id="name" layoutX="45.0" layoutY="90.0" prefHeight="333.0" prefWidth="112.0" />
-                  <ListView fx:id="email" layoutX="155.0" layoutY="90.0" prefHeight="333.0" prefWidth="97.0" />
-                  <ListView fx:id="parents" layoutX="252.0" layoutY="90.0" prefHeight="333.0" prefWidth="136.0" />
-                  <ListView fx:id="className" layoutX="388.0" layoutY="90.0" prefHeight="333.0" prefWidth="37.0" />
-                  <ListView fx:id="edit" layoutX="425.0" layoutY="90.0" prefHeight="333.0" prefWidth="44.0" />
+                  <ListView fx:id="name" layoutX="45.0" layoutY="90.0" prefHeight="333.0" prefWidth="134.0" />
+                  <ListView fx:id="email" layoutX="179.0" layoutY="90.0" prefHeight="333.0" prefWidth="201.0" />
+                  <ListView fx:id="className" layoutX="378.0" layoutY="90.0" prefHeight="333.0" prefWidth="41.0" />
+                  <ListView fx:id="edit" layoutX="418.0" layoutY="90.0" prefHeight="333.0" prefWidth="51.0" />
                   <Pane layoutX="14.0" layoutY="55.0" prefHeight="35.0" prefWidth="455.0" style="-fx-background-color: #fff;">
                      <children>
-                        <Label layoutX="7.0" layoutY="9.0" text="id">
+                        <Label alignment="CENTER" layoutX="7.0" layoutY="9.0" prefHeight="15.0" prefWidth="21.0" text="id">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="28.0" layoutY="10.0" prefHeight="15.0" prefWidth="116.0" text="name" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="31.0" layoutY="10.0" prefHeight="15.0" prefWidth="135.0" text="name" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="144.0" layoutY="10.0" prefHeight="15.0" prefWidth="92.0" text="email" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="170.0" layoutY="10.0" prefHeight="15.0" prefWidth="197.0" text="email" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="238.0" layoutY="10.0" prefHeight="15.0" prefWidth="135.0" text="parents" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="369.0" layoutY="10.0" prefHeight="15.0" prefWidth="28.0" text="class" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="373.0" layoutY="9.0" prefHeight="15.0" prefWidth="37.0" text="class" textAlignment="CENTER">
-                           <font>
-                              <Font name="Century Gothic" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER" layoutX="410.0" layoutY="10.0" prefHeight="15.0" prefWidth="43.0" text="edit" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="404.0" layoutY="10.0" prefHeight="15.0" prefWidth="43.0" text="edit" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>

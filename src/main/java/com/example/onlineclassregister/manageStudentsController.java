@@ -60,6 +60,7 @@ public class manageStudentsController {
     @FXML
     private TextField filterField;
 
+
     private final ObservableList<Student> dataList = FXCollections.observableArrayList();
 
     @FXML
@@ -75,16 +76,15 @@ public class manageStudentsController {
         ObservableList<String> classNames = FXCollections.observableArrayList();
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
-        for(Student s: studentList)
-        {
+        for (Student s : studentList) {
             ids.add(s.userId);
-            names.add(s.fName+" "+s.lName);
+            names.add(s.fName + " " + s.lName);
             emails.add(s.mail);
-           // parents.add(s.parent1Id+ " "+ s.parent2Id);
+            // parents.add(s.parent1Id+ " "+ s.parent2Id);
             classNames.add(classNamesMap.get(s.classId));
 
             Button b = new Button();
-           b.setText("Edit");
+            b.setText("Edit");
             b.setUserData(s);
             edits.add(b);
         }
@@ -92,7 +92,7 @@ public class manageStudentsController {
         id.setItems(ids);
         name.setItems(names);
         email.setItems(emails);
-      //  parent.setItems(parents);
+// parent.setItems(parents);
         className.setItems(classNames);
         edit.setItems(edits);
 
@@ -105,31 +105,28 @@ public class manageStudentsController {
             ObservableList<String> filteredClassNames = FXCollections.observableArrayList();
             ObservableList<Button> filteredEdits = FXCollections.observableArrayList();
 
-            for (Student s : dataList) {
-                if (s.fName.toLowerCase().contains(newValue.toLowerCase()) || s.lName.toLowerCase().contains(newValue.toLowerCase())) {
-                    filteredIds.add(s.userId);
-                    filteredNames.add(s.fName + " " + s.lName);
-                    filteredEmails.add(s.mail);
-                    // filteredParents.add(s.parent1Id+ " "+ s.parent2Id);
-                    filteredClassNames.add(classNamesMap.get(s.classId));
-
-                    Button b = new Button();
-                    b.setText("Edit");
-                    b.setUserData(s);
-                    filteredEdits.add(b);
+            for (int i = 0; i < ids.size(); i++) {
+                String studentName = names.get(i);
+                if (studentName.toLowerCase().contains(newValue.toLowerCase())) {
+                    filteredIds.add(ids.get(i));
+                    filteredNames.add(studentName);
+                    filteredEmails.add(emails.get(i));
+                    // filteredParents.add(parents.get(i));
+                    filteredClassNames.add(classNames.get(i));
+                    filteredEdits.add(edits.get(i));
                 }
             }
 
             id.setItems(filteredIds);
             name.setItems(filteredNames);
             email.setItems(filteredEmails);
-            // parent.setItems(filteredParents);
+// parent.setItems(filteredParents);
             className.setItems(filteredClassNames);
             edit.setItems(filteredEdits);
         });
-
     }
-    @FXML
+
+        @FXML
     private void goHome(){
 
         Stage stageToClose = (Stage) exitButton.getScene().getWindow();

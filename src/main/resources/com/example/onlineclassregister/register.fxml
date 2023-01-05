@@ -47,57 +47,7 @@
                   <Image url="@img/icons/home.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/classes.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/school.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/teachers.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/students.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="506.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/inbox.png" />
-               </image>
-            </ImageView>
-            <Button layoutX="34.0" layoutY="262.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Home" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="74.0" layoutY="355.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Teachers Management" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="74.0" layoutY="307.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Students Management" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="41.0" layoutY="503.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Messages" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="73.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Classes Management" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="73.0" layoutY="404.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Courses Management" textFill="WHITE">
+            <Button fx:id="homeButton" layoutX="24.0" layoutY="262.0" mnemonicParsing="false" onAction="#goHome" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Home" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>
@@ -126,7 +76,7 @@
                   <Font name="Century Gothic" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="currentSituationHead" fontSmoothingType="LCD" layoutX="1.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register - Student X" textAlignment="CENTER" wrappingWidth="569.1828784942627">
+            <Text fx:id="currentSituationHead" fontSmoothingType="LCD" layoutX="1.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register - choose student" textAlignment="CENTER" wrappingWidth="569.1828784942627">
                <font>
                   <Font name="Century Gothic" size="18.0" />
                </font>
@@ -136,7 +86,7 @@
                   <Font name="Century Gothic Bold" size="12.0" />
                </font>
             </Button>
-            <Button layoutX="391.0" layoutY="613.0" maxHeight="30.4" maxWidth="83.2" minHeight="30.4" minWidth="83.2" mnemonicParsing="false" prefHeight="30.4" prefWidth="83.2" style="-fx-background-color: #66bbc4; -fx-background-radius: 25; -fx-border-radius: 25;" text="Add Absent" textFill="WHITE">
+            <Button fx:id="addAbsence" layoutX="391.0" layoutY="613.0" maxHeight="30.4" maxWidth="83.2" minHeight="30.4" minWidth="83.2" mnemonicParsing="false" onAction="#addAbsenceClick" prefHeight="30.4" prefWidth="83.2" style="-fx-background-color: #66bbc4; -fx-background-radius: 25; -fx-border-radius: 25;" text="Add Abs." textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="12.0" />
                </font>
@@ -160,6 +110,7 @@
                </font>
             </Label>
             <Text fx:id="studentAlert" disable="true" fill="#cf1919" layoutX="76.0" layoutY="667.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a student first!" />
+            <Text fx:id="studentAlert1" disable="true" fill="#cf1919" layoutX="366.0" layoutY="666.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a student first!" />
          </children>
       </AnchorPane>
    </right>

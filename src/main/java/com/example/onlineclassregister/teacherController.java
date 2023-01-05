@@ -11,19 +11,21 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.onlineclassregister.Student.getStudents;
 import static com.example.onlineclassregister.Teacher.getTeachers;
 
-public class adminController {
+
+public class teacherController {
 
     @FXML
+    private Button exitButton;
+    @FXML
     private Label titleAdmin;
-
+    @FXML
+    private Label dateBar;
     @FXML
     private Label role;
 
@@ -34,45 +36,18 @@ public class adminController {
     private Label lName;
 
     @FXML
-    private Label mail;
-
-    @FXML
     private Label phone;
 
     @FXML
-    private Label dateBar;
-
-    @FXML
-    private Button exitButton;
+    private Label mail;
 
     @FXML
     private ListView<String> classesList;
 
-    @FXML
-    private Button register;
-
-    @FXML
-    private Button studentsManager;
-
-    public void registerView() throws IOException {
-
-        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
-        stageToClose.close();
-
-
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("register.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("ClassRegister | Register");
-        stage.setScene(scene);
-        stage.show();
-
-    }
 
     public void initialize() {
 
-        Teacher admin = null;
+        Teacher teacher = null;
 
         List<Teacher> teachers = new ArrayList<>();
         List<Student> students = new ArrayList<>();
@@ -88,49 +63,54 @@ public class adminController {
         for(Teacher t: teachers)
             if(loggedUser.userId==t.userId)
             {
-                admin=t;
+                teacher=t;
                 break;
             }
 
 
-        titleAdmin.setText("Hello "+ admin.fName + ", this is your main page: ");
-        dateBar.setText("Currently logged-in: "+ admin.mail);
+        titleAdmin.setText("Hello "+ teacher.fName + ", this is your main page: ");
+        dateBar.setText("Currently logged-in: "+ teacher.mail);
 
         ///personal details
-        role.setText("Role: "+loggedUser.getRole(admin));
-        fName.setText("First name: "+admin.fName);
-        lName.setText("Last name: "+admin.lName);
-        mail.setText("E-mail address: "+admin.mail);
-        phone.setText("Phone number: "+admin.phone);
+        role.setText("Role: "+loggedUser.getRole(teacher));
+        fName.setText("First name: "+teacher.fName);
+        lName.setText("Last name: "+teacher.lName);
+        mail.setText("E-mail address: "+teacher.mail);
+        phone.setText("Phone number: "+teacher.phone);
 
-        for(Integer classId: admin.ClassesId){
-            String name=admin.classesName.get(classId);
+        for(Integer classId: teacher.ClassesId){
+            String name=teacher.classesName.get(classId);
             classesList.getItems().add(name);
         }
 
 
     }
 
-    public void exitButton(ActionEvent e){
-
+    public void exitButton() {
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
 
     }
 
-    public void manageStudents() throws IOException {
+    public void registerView() {
 
         Stage stageToClose = (Stage) exitButton.getScene().getWindow();
         stageToClose.close();
 
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("studentManager.fxml"));
+        try{
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("register.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 850, 700);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("ClassRegister | Register");
         stage.setScene(scene);
-        stage.show();
+        stage.show(); } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+
+    public void messagesView() {
     }
 }

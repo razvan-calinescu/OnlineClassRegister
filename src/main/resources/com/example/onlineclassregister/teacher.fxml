@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.onlineclassregister.adminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.onlineclassregister.teacherController">
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="298.0" style="-fx-background-color: #66bbc4;" BorderPane.alignment="CENTER">
          <children>
@@ -45,47 +45,7 @@
                   <Image url="@img/icons/register.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/classes.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/school.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/teachers.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="48.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icons/students.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="register" layoutX="34.0" layoutY="262.0" mnemonicParsing="false" onAction="#registerView" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Register" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="74.0" layoutY="355.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Teachers Management" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="studentsManager" layoutX="73.0" layoutY="307.0" mnemonicParsing="false" onAction="#manageStudents" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Students Management" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="73.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Classes Management" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button layoutX="73.0" layoutY="404.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Courses Management" textFill="WHITE">
+            <Button fx:id="register" layoutX="28.0" layoutY="262.0" mnemonicParsing="false" onAction="#registerView" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Register" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>

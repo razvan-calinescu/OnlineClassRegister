@@ -66,53 +66,150 @@ public class registerController {
     @FXML
     private Text studentAlert;
 
+    @FXML
+    private Text studentAlert1;
+
+    @FXML
+    private Button addAbsence;
+
+    @FXML
+    private Button homeButton;
+
     private Student currentStudent;
     private Teacher currentTeacher;
+    
+    @FXML
+    private void goHome(){
+
+        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
+        stageToClose.close();
+        
+        List<SchoolPerson> users= new ArrayList<>();
+        users= SchoolPerson.getUsers();
+        
+        SchoolPerson user=null;
+        
+        for(SchoolPerson s: users)
+            if(s.userId == loggedUser.userId)
+            {
+                user=s;
+                break;
+            }
+
+
+        try{
+            FXMLLoader fxmlLoader = null;
+            if(user.isAdmin)
+            fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("adminTeacher.fxml"));
+            else if (user.role==1) {
+                fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("teacher.fxml"));
+            } else if (user.role==2) {
+                fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("student.fxml"));
+                
+            } else if(user.role==3){
+               fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("parent.fxml"));
+            }
+            Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(scene);
+            stage.show(); } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+    }
+
+    @FXML
+    private void addAbsenceClick() throws IOException {
+
+        if(gradedUser.id==-1)
+            studentAlert1.setFill(Paint.valueOf("Red"));
+        else {
+            studentAlert1.setFill(Paint.valueOf("White"));
+
+
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addAbsence.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Add Absence");
+            stage.setScene(scene);
+            stage.showAndWait();
+
+            if (gradedUser.absence) {
+
+                List<Teacher> aux = Teacher.getTeachers();
+
+                for (Teacher t : aux)
+                    if (t.userId == loggedUser.userId)
+                        currentTeacher = t;
+
+
+                String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isAbsence, date) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE ) ";
+
+                dbConnection dbConn = new dbConnection();
+                Connection conn = dbConn.getConnection();
+
+                try {
+
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(SQL);
+                    getStudentById2();
+
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            }
+        }
+
+    }
 
     public void addGradeClick() throws IOException {
 
         if(gradedUser.id==-1)
             studentAlert.setFill(Paint.valueOf("Red"));
-        else
+        else {
             studentAlert.setFill(Paint.valueOf("White"));
 
 
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addGrade.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Add Grade");
+            stage.setScene(scene);
+            stage.showAndWait();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addGrade.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("ClassRegister | Add Grade");
-        stage.setScene(scene);
-        stage.showAndWait();
+            if (gradedUser.grade != -1) {
 
-        if(gradedUser.grade!=-1) {
+                List<Teacher> aux = Teacher.getTeachers();
 
-            List<Teacher> aux = Teacher.getTeachers();
-
-            for(Teacher t: aux)
-                if(t.userId==loggedUser.userId)
-                    currentTeacher=t;
-
+                for (Teacher t : aux)
+                    if (t.userId == loggedUser.userId)
+                        currentTeacher = t;
 
 
-            String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isGrade, date, gradeValue) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE, " + gradedUser.grade + " ) ";
+                String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isGrade, date, gradeValue) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE, " + gradedUser.grade + " ) ";
 
-            dbConnection dbConn = new dbConnection();
-            Connection conn = dbConn.getConnection();
+                dbConnection dbConn = new dbConnection();
+                Connection conn = dbConn.getConnection();
 
-            try {
+                try {
 
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(SQL);
-                getStudentById2();
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(SQL);
+                    getStudentById2();
 
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+
             }
-
-
         }
 
     }
@@ -120,10 +217,16 @@ public class registerController {
 
     public void getClassById() throws SQLException {
 
-        int id = Integer.parseInt(classId.getText());
+        int id = -1;
+        studentsList.getItems().clear();
         Map<Integer, String> classes= Class.getAllClassesMap();
 
-        if(classes.entrySet().size()>0)
+        if(!classId.getText().isBlank() && Class.getAllClassesMap().containsKey(Integer.parseInt(classId.getText())));
+        id=Integer.parseInt(classId.getText());
+
+
+
+        if(classes.entrySet().size()>0 && id!=-1)
         {
             studentsListHead.setText("Students - Class "+Class.getAllClassesMap().get(id));
             List<Student> students = Student.getStudents();
@@ -135,7 +238,7 @@ public class registerController {
         else
         {
             studentsListHead.setText("Class Inexistent");
-            studentsList.getItems().add("List Empty");
+            studentsList.getItems().clear();
         }
 
 
@@ -146,26 +249,35 @@ public class registerController {
         gradedUser.id=-1;
         gradedUser.studentId=-1;
         gradedUser.grade=-1;
-
-        int id= Integer.parseInt(studentId.getText());
+        gradedUser.absence=false;
         List<Student> students= Student.getStudents();
 
+        int id=-1;
 
+        if(!studentId.getText().isBlank())
+         id=Integer.parseInt(studentId.getText());
 
-        for(Student s: students)
-            if(s.userId==id) {
+    boolean userFound=false;
+
+    for(Student s: students)
+        if(s.userId==id)
+            userFound=true;
+
+    if(id!=-1 && userFound) {
+        for (Student s : students)
+            if (s.userId == id) {
                 currentSituationHead.setText("Current Situation for " + s.fName + " " + s.lName);
-                currentStudent=s;
+                currentStudent = s;
 
-                gradedUser.id=s.userId;
-                gradedUser.studentId=s.studId;
+                gradedUser.id = s.userId;
+                gradedUser.studentId = s.studId;
 
-                String SQL="Select * from register"+currentStudent.userId+" WHERE teacherId="+loggedUser.userId;
+                String SQL = "Select * from register" + currentStudent.userId + " WHERE teacherId=" + loggedUser.userId;
 
                 Map<Integer, String> subjectIdName = new HashMap<>();
                 subjectIdName = Subject.initSubject();
 
-                try{
+                try {
 
                     gradesList.getItems().clear();
                     absenceList.getItems().clear();
@@ -173,23 +285,23 @@ public class registerController {
                     dbConnection dbConn = new dbConnection();
                     Connection conn = dbConn.getConnection();
 
-                    Statement stmt= conn.createStatement();
-                    ResultSet res= stmt.executeQuery(SQL);
+                    Statement stmt = conn.createStatement();
+                    ResultSet res = stmt.executeQuery(SQL);
 
-                    String rowGrades="", rowAbsence="";
-                    while(res.next()){
-                        rowGrades="";
-                        rowAbsence="";
+                    String rowGrades = "", rowAbsence = "";
+                    while (res.next()) {
+                        rowGrades = "";
+                        rowAbsence = "";
 
-                        if(res.getInt("isGrade")==1) {
+                        if (res.getInt("isGrade") == 1) {
                             rowGrades += subjectIdName.get(res.getInt("subjectId")) + ": " + res.getInt("gradeValue") + " / " + res.getDate("date");
                             gradesList.getItems().add(rowGrades);
                         }
 
-                        if(res.getInt("isAbsence")==1){
-                            rowAbsence+=subjectIdName.get(res.getInt("subjectId"))+ ": Absent" + " / " + res.getDate("date");
-                            if(res.getInt("motivated")==1)
-                                rowAbsence+=" - Motivated";
+                        if (res.getInt("isAbsence") == 1) {
+                            rowAbsence += subjectIdName.get(res.getInt("subjectId")) + ": Absent" + " / " + res.getDate("date");
+                            if (res.getInt("motivated") == 1)
+                                rowAbsence += " - Motivated";
 
                             absenceList.getItems().add(rowAbsence);
 
@@ -201,10 +313,13 @@ public class registerController {
                 }
 
             }
-            else {
+    }
+
+            else
+            {
                 gradesList.getItems().clear();
                 absenceList.getItems().clear();
-                currentSituationHead.setText("User not found");
+                currentSituationHead.setText("Student not found");
             }
 
 
@@ -295,6 +410,7 @@ public class registerController {
         Teacher teacher = null;
 
         studentAlert.setFill(Paint.valueOf("White"));
+        studentAlert1.setFill(Paint.valueOf("White"));
 
         List<Teacher> teachers = new ArrayList<>();
         List<Student> students = new ArrayList<>();

@@ -11,17 +11,16 @@ import java.util.*;
 public class Teacher extends SchoolPerson{
 
 
-    int subjectId, weeklyClasses, classTeacherId, isAdmin, teacherId, classesCount; //classesCount = cate clase are in TOTAL, gen 3 daca are o a 9a, 2 a 10a etc
+    int subjectId, weeklyClasses, classTeacherId, teacherId, classesCount; //classesCount = cate clase are in TOTAL, gen 3 daca are o a 9a, 2 a 10a etc
     List<Integer> ClassesId = new ArrayList<>();
 
     Map<Integer, String> classesName = new HashMap<>();
 
-    public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int isAdmin, int teacherId, int classesCount, List<Integer> classes, Map<Integer, String> classesNames) {
-        super(fName, lName, id, role, mail, phone, birthDate);
+    public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int teacherId, int classesCount, List<Integer> classes, Map<Integer, String> classesNames) {
+        super(fName, lName, id, role, mail, phone, birthDate, false);
         this.subjectId = subjectId;
         this.weeklyClasses = weeklyClasses;
         this.classTeacherId = classTeacherId;
-        this.isAdmin = isAdmin;
         this.teacherId = teacherId;
         this.classesCount = classesCount;
         ClassesId = classes;
@@ -49,7 +48,6 @@ public class Teacher extends SchoolPerson{
                 int auxSubjId = rs.getInt("subjectId");
                 int auxWeeklyClasses = rs.getInt("weeklyClasses");
                 int auxClassTeacherId = rs.getInt("classTeacherId");
-                int auxIsAdmin = rs.getInt("isAdmin");
                 int auxClassesCount = rs.getInt("classesCount");
                 List<Integer> auxClasses = new ArrayList<>();
 
@@ -82,7 +80,7 @@ public class Teacher extends SchoolPerson{
                     }
 
 
-                auxT = new Teacher(auxFName, auxLName, auxUserId, auxRole, auxMail, auxPhone, auxBDate, auxSubjId, auxWeeklyClasses, auxClassTeacherId, auxIsAdmin, auxTeacherId, auxClassesCount, auxClasses, auxClassesName );
+                auxT = new Teacher(auxFName, auxLName, auxUserId, auxRole, auxMail, auxPhone, auxBDate, auxSubjId, auxWeeklyClasses, auxClassTeacherId, auxTeacherId, auxClassesCount, auxClasses, auxClassesName );
                 aux.add(auxT);
 
             }

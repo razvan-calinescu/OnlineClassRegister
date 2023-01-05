@@ -18,6 +18,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class loginController {
 
@@ -38,6 +40,8 @@ public class loginController {
 
     @FXML
     private Label statusMessage;
+
+    SchoolPerson loggedIn;
 
 
     public void exitButton(ActionEvent e)
@@ -106,15 +110,43 @@ public class loginController {
 
     private void changeWindow() throws IOException {
 
+        List<SchoolPerson> users = new ArrayList<>();
+        users=SchoolPerson.getUsers();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("adminTeacher.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+        SchoolPerson activeUser = null;
+        for(SchoolPerson user: users)
+            if(user.userId == loggedUser.userId)
+                activeUser=user;
 
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("ClassRegister | Teacher Admin");
-        stage.setScene(scene);
-        stage.show();
+        if(activeUser.isAdmin) {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("adminTeacher.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Teacher Admin");
+            stage.setScene(scene);
+            stage.show();
+        }
+        else if(activeUser.role == 1)
+        {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("teacher.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Teacher");
+            stage.setScene(scene);
+            stage.show();
+        }
+        else if(activeUser.role == 2)
+        {
+        ;
+        }
+        else if(activeUser.role == 3)
+        {
+          ;
+        }
     }
 
     private int attemptLogin(String email, String password) {

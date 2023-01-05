@@ -10,12 +10,12 @@ import java.util.*;
 
 public class Student extends SchoolPerson{
 
-    int  classId, totalMissingAttendance, totalMotivated, userId, registerId, parent1Id, parent2Id, coursesCount, studId;
-    double average;
-    List<Integer> coursesAttended = new ArrayList<>();
+    public int  classId, totalMissingAttendance, totalMotivated, userId, registerId, parent1Id, parent2Id, coursesCount, studId;
+    public double average;
+    public List<Integer> coursesAttended = new ArrayList<>();
 
     public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int registerId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId) {
-        super(fName, lName, id, role, mail, phone, birthDate);
+        super(fName, lName, id, role, mail, phone, birthDate, false);
         this.classId = classId;
         this.totalMissingAttendance = totalMissingAttendance;
         this.totalMotivated = totalMotivated;
@@ -27,7 +27,6 @@ public class Student extends SchoolPerson{
         this.average = average;
         this.coursesAttended = coursesAttended;
     }
-
 
 
     public static List<Student> getStudents(){

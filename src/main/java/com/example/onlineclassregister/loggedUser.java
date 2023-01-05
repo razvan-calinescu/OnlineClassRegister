@@ -7,9 +7,7 @@ public class loggedUser {
     public static String getRole(SchoolPerson p)
     {
         if(p.role==1)
-            if(p instanceof Teacher && ((Teacher) p).isAdmin==1)
-            return "System Administrator";
-            else return "Teacher";
+            return "Teacher";
         else if(p.role==2)
             return "Student";
         else if(p.role==3)

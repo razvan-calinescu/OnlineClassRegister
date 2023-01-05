@@ -10,17 +10,16 @@ import java.util.*;
 
 public class Student extends SchoolPerson{
 
-    public int  classId, totalMissingAttendance, totalMotivated, userId, registerId, parent1Id, parent2Id, coursesCount, studId;
+    public int  classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, studId;
     public double average;
     public List<Integer> coursesAttended = new ArrayList<>();
 
-    public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int registerId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId) {
+    public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId) {
         super(fName, lName, id, role, mail, phone, birthDate, false);
         this.classId = classId;
         this.totalMissingAttendance = totalMissingAttendance;
         this.totalMotivated = totalMotivated;
         this.userId = userId;
-        this.registerId = registerId;
         this.parent1Id = parent1Id;
         this.parent2Id = parent2Id;
         this.coursesCount = coursesCount;
@@ -54,7 +53,6 @@ public class Student extends SchoolPerson{
                 int totalMissingAttendance=rs.getInt("totalMissingAttendance");
                 int totalMotivated=rs.getInt("totalMotivated");
                 int userId= rs.getInt("users.id");
-                int registerId = rs.getInt("registerId");
                 int parent1Id = rs.getInt("parent1Id");
                 int parent2Id = rs.getInt("parent2Id");
 
@@ -72,7 +70,7 @@ public class Student extends SchoolPerson{
                     courseIds.add(rs.getInt(coursesCountColId)+i+1);
 
 
-                auxS=new Student(fName, lName, userId, role, mail, phone, birthDate, classId, totalMissingAttendance, totalMotivated, userId, registerId, parent1Id, parent2Id, coursesCount, average, courseIds, studId );
+                auxS=new Student(fName, lName, userId, role, mail, phone, birthDate, classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, average, courseIds, studId );
                 aux.add(auxS);
             }
 

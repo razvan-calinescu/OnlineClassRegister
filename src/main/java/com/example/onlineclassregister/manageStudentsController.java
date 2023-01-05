@@ -80,27 +80,39 @@ public class manageStudentsController {
 
         for (Student s : studentList) {
             ids.add(s.userId);
-            names.add(s.fName + " " + s.lName);
-            emails.add(s.mail);
-            // parents.add(s.parent1Id+ " "+ s.parent2Id);
-            classNames.add(classNamesMap.get(s.classId));
+            if(s.fName==null)
+                names.add("Account Inactive");
+            else
+                names.add(s.fName + " " + s.lName);
 
-            Button b = new Button();
-            b.setText("Edit");
-            b.setUserData(s);
-            b.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        editButtonClick(b);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+            if(s.mail==null)
+                emails.add("Account Inactive");
+            else
+                emails.add(s.mail);
+
+            if(s.classId==0)
+                classNames.add(" - ");
+            else
+                classNames.add(classNamesMap.get(s.classId));
+
+            if(s!=null) {
+                Button b = new Button();
+                b.setText("Edit");
+                b.setUserData(s);
+                b.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            editButtonClick(b);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-            });
-            edits.add(b);
+                });
+                edits.add(b);
+            }
         }
 
         id.setItems(ids);
@@ -177,25 +189,37 @@ public class manageStudentsController {
 
         for (Student st : studentList) {
             ids.add(st.userId);
+            if(st.fName==null)
+                names.add("Account Inactive");
+            else
             names.add(st.fName + " " + st.lName);
+
+            if(st.mail==null)
+                emails.add("Account Inactive");
+            else
             emails.add(st.mail);
-            // parents.add(st.parent1Id+ " "+ st.parent2Id);
+
+            if(st.classId==0)
+                classNames.add(" - ");
+            else
             classNames.add(classNamesMap.get(st.classId));
 
-            Button bt = new Button();
-            bt.setText("Edit");
-            bt.setUserData(st);
-            bt.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        editButtonClick(bt);
-                    } catch (IOException | SQLException e) {
-                        throw new RuntimeException(e);
+            if(s!=null) {
+                Button bt = new Button();
+                bt.setText("Edit");
+                bt.setUserData(st);
+                bt.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            editButtonClick(bt);
+                        } catch (IOException | SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-            });
-            edits.add(bt);
+                });
+                edits.add(bt);
+            }
 
 
             id.setItems(ids);
@@ -257,14 +281,78 @@ public class manageStudentsController {
     }
 
 
-    public void addStudentClick() throws IOException {
+    public void addStudentClick() throws IOException, SQLException {
 
 
+        loggedUser.fromCsv=0;
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("createStudent.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.showAndWait();
+
+        id.refresh();
+        name.refresh();
+        email.refresh();
+        //parent.refresh();
+        className.refresh();
+        edit.refresh();
+
+        ObservableList<Integer> ids = FXCollections.observableArrayList();
+        ObservableList<String> names = FXCollections.observableArrayList();
+        ObservableList<String> emails = FXCollections.observableArrayList();
+        ObservableList<String> parents = FXCollections.observableArrayList();
+        ObservableList<String> classNames = FXCollections.observableArrayList();
+        ObservableList<Button> edits = FXCollections.observableArrayList();
+
+
+        List<Student> studentList = Student.getStudents();
+        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
+
+
+        for (Student st : studentList) {
+            ids.add(st.userId);
+            if(st.fName==null)
+                names.add("Account Inactive");
+            else
+                names.add(st.fName + " " + st.lName);
+
+            if(st.mail==null)
+                emails.add("Account Inactive");
+            else
+                emails.add(st.mail);
+
+            if(st.classId==0)
+                classNames.add(" - ");
+            else
+                classNames.add(classNamesMap.get(st.classId));
+
+            if(st!=null) {
+                Button bt = new Button();
+                bt.setText("Edit");
+                bt.setUserData(st);
+                bt.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            editButtonClick(bt);
+                        } catch (IOException | SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                edits.add(bt);
+            }
+
+
+            id.setItems(ids);
+            name.setItems(names);
+            email.setItems(emails);
+// parent.setItems(parents);
+            className.setItems(classNames);
+            edit.setItems(edits);
+
+        }
     }
 }

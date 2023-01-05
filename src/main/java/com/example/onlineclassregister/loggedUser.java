@@ -3,6 +3,7 @@ package com.example.onlineclassregister;
 public class loggedUser {
     public static String mail;
     public static int userId;
+    public static int fromCsv;
 
     public static String getRole(SchoolPerson p)
     {

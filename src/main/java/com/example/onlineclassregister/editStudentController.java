@@ -63,6 +63,7 @@ public class editStudentController {
     public void deleteConfirmButton() {
 
         String SQL= "Delete from users where id= "+ student.userId+";";
+        String SQL2= "DROP table register"+student.userId+";";
 
         dbConnection dbConn =new dbConnection();
         Connection conn = dbConn.getConnection();
@@ -70,6 +71,7 @@ public class editStudentController {
         try{
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(SQL);
+            stmt.executeUpdate(SQL2);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -72,11 +73,23 @@ public class addGradeController {
     private void addButtonClick(){
 
         double grade = Double.parseDouble(gradeField.getText());
-        gradedUser.grade=grade;
+
+        if(grade>=1.0 && grade<=10.0)
+        {
+            gradedUser.grade=grade;
+
+            Stage stageToClose = (Stage) addButton.getScene().getWindow();
+            stageToClose.close();
+
+        }
+        else
+        {
+            gradeField.clear();
+            gradeField.setPromptText("Incorrect value!");
 
 
-        Stage stageToClose = (Stage) addButton.getScene().getWindow();
-        stageToClose.close();
+        }
+
 
     }
 

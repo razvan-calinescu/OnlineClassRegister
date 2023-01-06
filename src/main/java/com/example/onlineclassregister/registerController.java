@@ -16,10 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.example.onlineclassregister.Student.getStudents;
 import static com.example.onlineclassregister.Teacher.getTeachers;
@@ -145,7 +142,7 @@ public class registerController {
                         currentTeacher = t;
 
 
-                String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isAbsence, date) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE ) ";
+                String SQL = "INSERT INTO register"+gradedUser.id+"(studentId, classId, teacherId, subjectId, isAbsence, date) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE ) ";
 
                 dbConnection dbConn = new dbConnection();
                 Connection conn = dbConn.getConnection();
@@ -192,7 +189,7 @@ public class registerController {
                         currentTeacher = t;
 
 
-                String SQL = "INSERT INTO register2(studentId, classId, teacherId, subjectId, isGrade, date, gradeValue) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE, " + gradedUser.grade + " ) ";
+                String SQL = "INSERT INTO register"+gradedUser.id+"(studentId, classId, teacherId, subjectId, isGrade, date, gradeValue) VALUES (" + currentStudent.userId + ", " + currentStudent.classId + ", " + currentTeacher.teacherId + ", " + currentTeacher.subjectId + ", 1, CURRENT_DATE, " + gradedUser.grade + " ) ";
 
                 dbConnection dbConn = new dbConnection();
                 Connection conn = dbConn.getConnection();
@@ -272,7 +269,7 @@ public class registerController {
                 gradedUser.id = s.userId;
                 gradedUser.studentId = s.studId;
 
-                String SQL = "Select * from register" + currentStudent.userId + " WHERE teacherId=" + loggedUser.userId;
+                String SQL = "Select * from register" + gradedUser.id + " WHERE teacherId=" + loggedUser.userId;
 
                 Map<Integer, String> subjectIdName = new HashMap<>();
                 subjectIdName = Subject.initSubject();
@@ -317,6 +314,7 @@ public class registerController {
 
             else
             {
+                System.out.println("HEREEE1");
                 gradesList.getItems().clear();
                 absenceList.getItems().clear();
                 currentSituationHead.setText("Student not found");
@@ -327,65 +325,52 @@ public class registerController {
 
     public void getStudentById2() throws SQLException{
 
+        List<Student> students =Student.getStudents();
+        Map<Integer, String> courseNames = Subject.initSubject();
 
-        int id= Integer.parseInt(studentId.getText());
-        List<Student> students= Student.getStudents();
-
-
+        absenceList.getItems().clear();
+        gradesList.getItems().clear();
 
         for(Student s: students)
-            if(s.userId==id) {
-                currentStudent=s;
+            if(s.userId == gradedUser.id)
+            {
+                String SQL = "Select * from register"+gradedUser.id+";";
+                dbConnection dbConn = new dbConnection();
+                Connection conn = dbConn.getConnection();
+
+                Statement stmt = conn.createStatement();
+                ResultSet res = stmt.executeQuery(SQL);
+
+                while(res.next())
+                {
+                    if(res.getInt("isAbsence")==1)
+                    {
+                        String date = String.valueOf(res.getDate("date"));
+                        int motivated = res.getInt("motivated");
+                        int courseId = res.getInt("subjectId");
+
+                        if(motivated==0)
+                            absenceList.getItems().add(courseNames.get(courseId)+": "+date);
+                        else
+                            absenceList.getItems().add(courseNames.get(courseId)+": "+date+" - Motivated");
+
+                    }
+                    else if(res.getInt("isGrade")==1){
+                        double grade = res.getDouble("gradeValue");
+                        String date = String.valueOf(res.getDate("date"));
+                        int courseId = res.getInt("subjectId");
+                        gradesList.getItems().add(courseNames.get(courseId)+": "+grade+" / "+date);
 
 
-                String SQL="Select * from register"+currentStudent.userId+" WHERE teacherId="+loggedUser.userId;
-
-                Map<Integer, String> subjectIdName = new HashMap<>();
-                subjectIdName = Subject.initSubject();
-
-                try{
-
-                    gradesList.getItems().clear();
-                    absenceList.getItems().clear();
-
-                    dbConnection dbConn = new dbConnection();
-                    Connection conn = dbConn.getConnection();
-
-                    Statement stmt= conn.createStatement();
-                    ResultSet res= stmt.executeQuery(SQL);
-
-                    String rowGrades="", rowAbsence="";
-                    while(res.next()){
-                        rowGrades="";
-                        rowAbsence="";
-
-                        if(res.getInt("isGrade")==1) {
-                            rowGrades += subjectIdName.get(res.getInt("subjectId")) + ": " + res.getInt("gradeValue") + " / " + res.getDate("date");
-                            gradesList.getItems().add(rowGrades);
-                        }
-
-                        if(res.getInt("isAbsence")==1){
-                            rowAbsence+=subjectIdName.get(res.getInt("subjectId"))+ ": Absent" + " / " + res.getDate("date");
-                            if(res.getInt("motivated")==1)
-                                rowAbsence+=" - Motivated";
-
-                            absenceList.getItems().add(rowAbsence);
-
-                        }
                     }
 
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+
                 }
 
-            }
-            else {
-                gradesList.getItems().clear();
-                absenceList.getItems().clear();
-                currentSituationHead.setText("User not found");
-            }
+                conn.close();
 
 
+            }
     }
 
 

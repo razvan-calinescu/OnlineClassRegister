@@ -152,7 +152,14 @@ public class loginController {
         }
         else if(activeUser.role == 3)
         {
-          ;
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("registerParent.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Register");
+            stage.setScene(scene);
+            stage.show();
         }
     }
 

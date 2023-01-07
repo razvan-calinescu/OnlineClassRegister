@@ -5,13 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import javax.xml.transform.Result;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,13 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class registerStudentController {
+public class registerParentController {
+
+    @FXML
+    private Button exitButton;
+
+    @FXML
+    private ListView<String> studentsList;
+
+    @FXML
+    private ListView<Button> buttonStudents;
 
     @FXML
     private ListView<String> subjectList;
 
     @FXML
-    private ListView<Button> buttonList;
+    private ListView<Button> buttonSubject;
+
+    @FXML
+    private Text average;
 
     @FXML
     private ListView<String> gradesList;
@@ -34,37 +43,55 @@ public class registerStudentController {
     @FXML
     private ListView<String> attendanceList;
 
-    @FXML
-    private Button exitButton;
+    public void exitButton() {
 
-    @FXML
-    private Label dateBar;
+        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
+        stageToClose.close();
+    }
 
-    @FXML
-    private Text average;
-
-    @FXML
     public void initialize(){
-
 
         average.setText("");
 
-        List<SchoolPerson> users = SchoolPerson.getUsers();
-        SchoolPerson user = null;
+        studentsList.setFixedCellSize(60);
+        buttonStudents.setFixedCellSize(60);
+        List<Student> students = Student.getStudents();
 
-        for(SchoolPerson p: users)
-            if(p.userId==loggedUser.userId)
-                user=p;
+        for(Student s: students)
+            if(s.parent1Id==loggedUser.userId)
+            {
+                studentsList.getItems().add(s.fName + " " + s.lName);
 
-        if(user != null)
-        dateBar.setText("Logged in as "+ user.mail);
+                Button b = new Button();
+                b.setText("Choose");
+                b.setUserData(s);
+                b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                b.setPrefWidth(54);
+                b.setPrefHeight(23);
 
+                b.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        editButtonClick(b);
+                    }
+                });
+
+                buttonStudents.getItems().add(b);
+            }
+
+    }
+
+    private void editButtonClick(Button b) {
+
+        Student student = (Student) b.getUserData();
+        subjectList.setFixedCellSize(60);
+        buttonSubject.setFixedCellSize(60);
 
         Map<Integer, String> subjectNames = Subject.initSubject();
         List<Integer> attendedCourses = new ArrayList<>();
 
 
-        String SQL= "Select * from student where userId="+loggedUser.userId+";";
+        String SQL= "Select * from student where userId="+student.userId+";";
 
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
@@ -93,20 +120,23 @@ public class registerStudentController {
 
                 subjectList.getItems().add(subjectNames.get(courseId));
 
-            Button b = new Button();
-            b.setText("Choose");
-            b.setUserData(courseId);
+                Button bSubject = new Button();
+                bSubject.setText("Choose");
+                bSubject.setUserData(courseId);
+                bSubject.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                bSubject.setPrefWidth(54);
+                bSubject.setPrefHeight(23);
 
-            b.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    editButtonClick(b);
-                }
-            });
+                bSubject.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        editButtonClick1(bSubject);
+                    }
+                });
 
-            buttonList.getItems().add(b);
+                buttonSubject.getItems().add(b);
 
-        }
+            }
 
 
         }
@@ -115,7 +145,7 @@ public class registerStudentController {
 
     }
 
-    private void editButtonClick(Button b) {
+    private void editButtonClick1(Button b) {
 
         double avg=0;
         double avgCount=0;
@@ -167,13 +197,5 @@ public class registerStudentController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    public void exitButton() {
-
-        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
-        stageToClose.close();
-
     }
 }

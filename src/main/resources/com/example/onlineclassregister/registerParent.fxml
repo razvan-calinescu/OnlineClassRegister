@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.onlineclassregister.registerStudentController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.onlineclassregister.registerParentController">
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="298.0" style="-fx-background-color: #66bbc4;" BorderPane.alignment="CENTER">
          <children>
@@ -56,23 +56,17 @@
                   <Font name="Century Gothic Bold" size="24.0" />
                </font>
             </Text>
-            <Text fontSmoothingType="LCD" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can check your current situation for all your courses." textAlignment="CENTER" wrappingWidth="571.5176086425781">
+            <Text fontSmoothingType="LCD" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here you can check your children's scholar situation." textAlignment="CENTER" wrappingWidth="571.5176086425781">
                <font>
                   <Font name="Century Gothic" size="17.0" />
                </font>
             </Text>
-            <Text fontSmoothingType="LCD" layoutX="5.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To see your grades and attendance, please choose the subject first." textAlignment="CENTER" wrappingWidth="571.5176086425781">
+            <Text fontSmoothingType="LCD" layoutX="5.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To see the situation, please choose the child &amp; subject first." textAlignment="CENTER" wrappingWidth="571.5176086425781">
                <font>
                   <Font name="Century Gothic" size="17.0" />
                </font>
             </Text>
             <Line endX="100.0" layoutX="286.0" layoutY="102.0" startX="-100.0" />
-            <ListView fx:id="subjectList" layoutX="104.0" layoutY="204.0" prefHeight="184.0" prefWidth="283.0" />
-            <Text fontSmoothingType="LCD" layoutX="4.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" textAlignment="CENTER" wrappingWidth="571.5176086425781">
-               <font>
-                  <Font name="Century Gothic Bold" size="17.0" />
-               </font>
-            </Text>
             <Text fontSmoothingType="LCD" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grades" textAlignment="CENTER" wrappingWidth="277.1176452636719">
                <font>
                   <Font name="Century Gothic Bold" size="17.0" />
@@ -85,12 +79,25 @@
             </Text>
             <ListView fx:id="gradesList" layoutX="39.0" layoutY="462.0" prefHeight="200.0" prefWidth="200.0" />
             <ListView fx:id="attendanceList" layoutX="339.0" layoutY="462.0" prefHeight="200.0" prefWidth="200.0" />
-            <ListView fx:id="buttonList" layoutX="388.0" layoutY="204.0" prefHeight="184.0" prefWidth="102.0" />
-            <Text fx:id="average" fontSmoothingType="LCD" layoutX="88.0" layoutY="683.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current average:">
+            <Text fontSmoothingType="LCD" layoutX="300.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" textAlignment="CENTER" wrappingWidth="277.1176452636719">
+               <font>
+                  <Font name="Century Gothic Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text fontSmoothingType="LCD" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student" textAlignment="CENTER" wrappingWidth="277.1176452636719">
+               <font>
+                  <Font name="Century Gothic Bold" size="17.0" />
+               </font>
+            </Text>
+            <ListView fx:id="studentsList" layoutX="39.0" layoutY="204.0" prefHeight="200.0" prefWidth="146.0" />
+            <ListView fx:id="subjectList" layoutX="339.0" layoutY="204.0" prefHeight="200.0" prefWidth="146.0" />
+            <Text fx:id="average" fontSmoothingType="LCD" layoutX="89.0" layoutY="666.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current average:">
                <font>
                   <Font name="Century Gothic" size="12.0" />
                </font>
             </Text>
+            <ListView fx:id="buttonStudents" layoutX="185.0" layoutY="204.0" prefHeight="200.0" prefWidth="51.0" />
+            <ListView fx:id="buttonSubject" layoutX="485.0" layoutY="204.0" prefHeight="200.0" prefWidth="51.0" />
          </children>
       </AnchorPane>
    </right>

@@ -39,6 +39,7 @@ public class addGradeController {
     @FXML
     private Button cancelButton;
 
+
     private Student activeStudent;
     private Teacher activeTeacher;
 

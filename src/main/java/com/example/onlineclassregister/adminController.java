@@ -54,6 +54,12 @@ public class adminController {
     @FXML
     private Button studentsManager;
 
+    @FXML
+    private Button teachersManager;
+
+    @FXML
+    private Button classesManager;
+
     public void registerView() throws IOException {
 
         Stage stageToClose = (Stage) exitButton.getScene().getWindow();
@@ -124,9 +130,37 @@ public class adminController {
         Scene scene = new Scene(fxmlLoader.load(), 850, 700);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("ClassRegister | Register");
+        stage.setTitle("ClassRegister | Students Manager");
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    public void manageClasses() throws IOException {
+        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
+        stageToClose.close();
+
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("classManager.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("ClassRegister | Classes Manager");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void manageTeachers() throws IOException {
+        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
+        stageToClose.close();
+
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("teacherManager.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("ClassRegister | Teachers Manager");
+        stage.setScene(scene);
+        stage.show();
     }
 }

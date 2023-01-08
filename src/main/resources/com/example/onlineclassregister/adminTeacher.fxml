@@ -70,7 +70,7 @@
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>
             </Button>
-            <Button layoutX="74.0" layoutY="355.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Teachers Management" textFill="WHITE">
+            <Button fx:id="teachersManager" layoutX="74.0" layoutY="355.0" mnemonicParsing="false" onAction="#manageTeachers" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Teachers Management" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>
@@ -80,7 +80,7 @@
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>
             </Button>
-            <Button layoutX="73.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Classes Management" textFill="WHITE">
+            <Button fx:id="classesManagement" layoutX="73.0" layoutY="453.0" mnemonicParsing="false" onAction="#manageClasses" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Classes Management" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>

@@ -169,10 +169,10 @@ public class manageTeachersController {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
 
-       //////////////// editTeacherController controller = fxmlLoader.getController();
+       editTeacherController controller = fxmlLoader.getController();
 
-      ////////////////  controller.setStudent(t);
-       /////////////// controller.initialize(t);
+       controller.setTeacher(t);
+       controller.initialize(t);
 
         stage.showAndWait();
 

@@ -16,8 +16,8 @@ public class Teacher extends SchoolPerson{
 
     Map<Integer, String> classesName = new HashMap<>();
 
-    public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int teacherId, int classesCount, List<Integer> classes, Map<Integer, String> classesNames) {
-        super(fName, lName, id, role, mail, phone, birthDate, false);
+    public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int teacherId, int classesCount, List<Integer> classes, Map<Integer, String> classesNames, int isActive) {
+        super(fName, lName, id, role, mail, phone, birthDate, false, isActive);
         this.subjectId = subjectId;
         this.weeklyClasses = weeklyClasses;
         this.classTeacherId = classTeacherId;
@@ -79,8 +79,10 @@ public class Teacher extends SchoolPerson{
 
                     }
 
+                int auxIsActive = rs.getInt("isActive");
 
-                auxT = new Teacher(auxFName, auxLName, auxUserId, auxRole, auxMail, auxPhone, auxBDate, auxSubjId, auxWeeklyClasses, auxClassTeacherId, auxTeacherId, auxClassesCount, auxClasses, auxClassesName );
+
+                auxT = new Teacher(auxFName, auxLName, auxUserId, auxRole, auxMail, auxPhone, auxBDate, auxSubjId, auxWeeklyClasses, auxClassTeacherId, auxTeacherId, auxClassesCount, auxClasses, auxClassesName, auxIsActive);
                 aux.add(auxT);
 
             }

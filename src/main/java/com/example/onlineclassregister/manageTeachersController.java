@@ -66,6 +66,13 @@ public class manageTeachersController {
     @FXML
     private void initialize() throws SQLException {
 
+        id.setFixedCellSize(30);
+        name.setFixedCellSize(30);
+        email.setFixedCellSize(30);
+        subject.setFixedCellSize(30);
+        className.setFixedCellSize(30);
+        edit.setFixedCellSize(30);
+
         List<Teacher> teacherList = Teacher.getTeachers();
         Map<Integer, String> classNamesMap = Class.getAllClassesMap();
         Map<Integer, String> subjectNames = Subject.initSubject();
@@ -105,7 +112,7 @@ public class manageTeachersController {
                 b.setText("Edit");
                 b.setUserData(t);
                 b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                b.setPrefWidth(54);
+                b.setPrefWidth(44);
                 b.setPrefHeight(23);
                 b.setOnAction(new EventHandler<ActionEvent>() {
                     @Override

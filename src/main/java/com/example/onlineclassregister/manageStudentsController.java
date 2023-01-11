@@ -68,6 +68,12 @@ public class manageStudentsController {
     @FXML
     private void initialize() throws SQLException {
 
+        id.setFixedCellSize(30);
+        name.setFixedCellSize(30);
+        email.setFixedCellSize(30);
+        className.setFixedCellSize(30);
+        edit.setFixedCellSize(30);
+
         List<Student> studentList = Student.getStudents();
         Map<Integer, String> classNamesMap = Class.getAllClassesMap();
 
@@ -99,6 +105,9 @@ public class manageStudentsController {
                 Button b = new Button();
                 b.setText("Edit");
                 b.setUserData(s);
+                b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                b.setPrefWidth(54);
+                b.setPrefHeight(23);
                 b.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -208,6 +217,9 @@ public class manageStudentsController {
                 Button bt = new Button();
                 bt.setText("Edit");
                 bt.setUserData(st);
+                bt.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                bt.setPrefWidth(54);
+                bt.setPrefHeight(23);
                 bt.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -332,6 +344,9 @@ public class manageStudentsController {
                 Button bt = new Button();
                 bt.setText("Edit");
                 bt.setUserData(st);
+                bt.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                bt.setPrefWidth(54);
+                bt.setPrefHeight(23);
                 bt.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {

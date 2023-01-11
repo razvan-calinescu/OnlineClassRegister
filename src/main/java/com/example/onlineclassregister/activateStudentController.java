@@ -4,10 +4,14 @@ import conn.dbConnection;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class editStudentController {
+public class activateStudentController {
 
     @FXML
     private Button cancelButton;
@@ -41,12 +45,6 @@ public class editStudentController {
     private PasswordField password;
 
     @FXML
-    private Button deleteButton;
-
-    @FXML
-    private Button deleteConfirmButton;
-
-    @FXML
     private ComboBox<String> className;
 
     @FXML
@@ -61,16 +59,6 @@ public class editStudentController {
     @FXML
     private TextField parentPhone;
 
-
-    @FXML
-    public void deleteButtonClick(){
-
-        deleteConfirmButton.setDisable(false);
-        deleteConfirmButton.setOpacity(100);
-        deleteButton.setDisable(true);
-        deleteButton.setOpacity(0);
-
-    }
 
     @FXML
     public void deleteConfirmButton() {
@@ -99,11 +87,10 @@ public class editStudentController {
 
 
     @FXML
-    public void initialize(Student s) throws SQLException {
+    public void initialize() throws SQLException {
         Map<Integer, String> classes = Class.getAllClassesMap();
-        title.setText("You'll now be editing "+s.fName+ " "+ s.lName);
-        deleteConfirmButton.setDisable(true);
-        deleteConfirmButton.setOpacity(0);
+        title.setText("Welcome to your account, "+ loggedUser.mail);
+        email.setText(loggedUser.mail);
 
 
 
@@ -125,30 +112,55 @@ public class editStudentController {
 
         String updateStmt ="UPDATE users SET ";
 
+
         if(!fName.getText().isEmpty()) {
-            stmt1=true;
             updateStmt += "fName = '" + firstName + "', ";
         }
+        else {
+            fName.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty First Name Field");
+        }
         if(!lName.getText().isEmpty()) {
-            stmt1=true;
+
             updateStmt += "lName = '" + lastName + "', ";
         }
-        if(!email1.isEmpty() && emailOk(email1)) {
-            stmt1=true;
-            updateStmt += "mail = '" + email1 +"', ";
+        else {
+            lName.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty Last Name Field");
         }
+
         if(!password1.isEmpty()) {
-            stmt1=true;
+
             md5 md5Helper = new md5();
             password1=md5Helper.getMd5(password1);
             updateStmt += "password = '" + password1 + "', ";
         }
+        else {
+            password.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty Password Field");
+        }
         // Remove trailing comma
         updateStmt = updateStmt.substring(0, updateStmt.length() - 2);
         // Add WHERE clause to update specific record
-        updateStmt += " WHERE id = "+ student.userId + ";";
+        updateStmt += " WHERE id = "+ loggedUser.userId + ";";
+
+        dbConnection dbConn = new dbConnection();
+        Connection conn= dbConn.getConnection();
+
+        try{
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(updateStmt);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         Map<Integer, String> classNames= Class.getAllClassesMap();
+        List<Student> students = Student.getStudents();
+        Student student= null;
+
+        for(Student s: students)
+            if(s.userId== loggedUser.userId)
+                student= s;
 
         String updateStmt2="";
         boolean stmt2=false;
@@ -165,57 +177,73 @@ public class editStudentController {
                 }
 
             updateStmt2="UPDATE student SET classId="+classId+" where userId="+ student.userId+";";
+        } else {
+            className.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("No class chosen");
         }
 
-        String updateStmt3="UPDATE users SET ";
+        String updateStmt3="INSERT INTO users(fName, lName, role, mail, phone, password) VALUES (";
         boolean stmt3=false;
 
         if(!parentFName.getText().isEmpty()){
             stmt3=true;
-            updateStmt3+="fName="+ parentFName.getText()+", ";
+            updateStmt3+="'"+parentFName.getText()+"', ";
+        }else {
+            parentFName.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty parent first name");
         }
         if(!parentLName.getText().isEmpty()){
             stmt3=true;
-            updateStmt3+="lName="+ parentLName.getText()+", ";
+            updateStmt3+="'"+parentLName.getText()+"', 3, ";
+        }else {
+            parentLName.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty parent last name");
         }
+
         if(!parentEmail.getText().isEmpty() && emailOk(parentEmail.getText())){
             stmt3=true;
-            updateStmt3+="mail="+ parentEmail.getText()+", ";
+            updateStmt3+="'"+parentEmail.getText()+"', ";
+        }else {
+            parentEmail.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty parent email");
         }
+
         if(!parentPhone.getText().isEmpty()){
             stmt3=true;
-            updateStmt3+="phone="+ parentPhone.getText()+", ";
+            updateStmt3+="'"+parentPhone.getText()+"', '"+parentEmail.getText().substring(0,5)+"')";
+        }else {
+            parentPhone.setStyle("-fx-border-color: red;");
+            throw new RuntimeException("Empty parent phone");
         }
 
-        // Remove trailing comma
-        updateStmt = updateStmt.substring(0, updateStmt.length() - 2);
-        // Add WHERE clause to update specific record
-        updateStmt += " WHERE id = "+ student.parent1Id + ";";
 
 
+        String stmtActivate = "UPDATE users SET isActive = 1 WHERE id=" + loggedUser.userId+"; ";
 
-
-        dbConnection dbConn = new dbConnection();
-        Connection conn= dbConn.getConnection();
 
         try{
             Statement stmt=conn.createStatement();
-            if(stmt1)
-            stmt.executeUpdate(updateStmt);
+            stmt.executeUpdate(updateStmt2);
+            stmt.executeUpdate(updateStmt3);
+            stmt.executeUpdate(stmtActivate);
 
-            if(stmt2)
-                stmt.executeUpdate(updateStmt2);
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("registerStudent.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 850, 700);
 
-            if(stmt3)
-                stmt.executeUpdate(updateStmt3);
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Register");
+            stage.setScene(scene);
+            stage.show();
 
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
+            Stage stage1 = (Stage) cancelButton.getScene().getWindow();
+            stage1.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
 
 
     }

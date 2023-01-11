@@ -14,8 +14,8 @@ public class Student extends SchoolPerson{
     public double average;
     public List<Integer> coursesAttended = new ArrayList<>();
 
-    public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId) {
-        super(fName, lName, id, role, mail, phone, birthDate, false);
+    public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId, int isActive) {
+        super(fName, lName, id, role, mail, phone, birthDate, false, isActive);
         this.classId = classId;
         this.totalMissingAttendance = totalMissingAttendance;
         this.totalMotivated = totalMotivated;
@@ -69,8 +69,10 @@ public class Student extends SchoolPerson{
                 for(int i=0; i<coursesCount; i++)
                     courseIds.add(rs.getInt(coursesCountColId)+i+1);
 
+                int isAct = rs.getInt("isActive");
 
-                auxS=new Student(fName, lName, userId, role, mail, phone, birthDate, classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, average, courseIds, studId );
+
+                auxS=new Student(fName, lName, userId, role, mail, phone, birthDate, classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, average, courseIds, studId, isAct );
                 aux.add(auxS);
             }
 

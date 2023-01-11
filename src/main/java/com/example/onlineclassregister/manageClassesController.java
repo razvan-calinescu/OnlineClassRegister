@@ -68,6 +68,13 @@ public class manageClassesController {
         List<Class> classList = Class.getAllClassesList();
         Map<Integer, String> classNamesMap = Class.getAllClassesMap();
 
+        id.setFixedCellSize(30);
+        name.setFixedCellSize(30);
+        classTeacher.setFixedCellSize(30);
+        studentsCount.setFixedCellSize(30);
+        room.setFixedCellSize(30);
+        edit.setFixedCellSize(30);
+
         ObservableList<Integer> ids = FXCollections.observableArrayList();
         ObservableList<String> names = FXCollections.observableArrayList();
         ObservableList<String> classTeachers = FXCollections.observableArrayList();
@@ -87,13 +94,14 @@ public class manageClassesController {
                     classTeachers.add(t.fName+" "+t.lName);
 
             rooms.add(c.room);
+            studentCounts.add(c.studentsCount);
 
             if(c!=null) {
                 Button b = new Button();
                 b.setText("Edit");
                 b.setUserData(c);
                 b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                b.setPrefWidth(54);
+                b.setPrefWidth(44);
                 b.setPrefHeight(23);
                 b.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -201,7 +209,7 @@ public class manageClassesController {
                 bt.setText("Edit");
                 bt.setUserData(cl);
                 bt.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                bt.setPrefWidth(54);
+                bt.setPrefWidth(44);
                 bt.setPrefHeight(23);
                 bt.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -316,7 +324,7 @@ public class manageClassesController {
                 bt.setText("Edit");
                 bt.setUserData(cl);
                 bt.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                bt.setPrefWidth(54);
+                bt.setPrefWidth(44);
                 bt.setPrefHeight(23);
                 bt.setOnAction(new EventHandler<ActionEvent>() {
                     @Override

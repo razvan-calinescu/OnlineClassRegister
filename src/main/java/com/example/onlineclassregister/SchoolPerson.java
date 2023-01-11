@@ -17,10 +17,11 @@ public class SchoolPerson {
     String mail, phone;
 
     boolean isAdmin;
+    int isActive;
 
     Date birthDate;
 
-    public SchoolPerson(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, boolean isAdmin) {
+    public SchoolPerson(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, boolean isAdmin, int isActive) {
         this.fName = fName;
         this.lName = lName;
         this.userId = id;
@@ -29,6 +30,7 @@ public class SchoolPerson {
         this.phone = phone;
         this.birthDate = birthDate;
         this.isAdmin = isAdmin;
+        this.isActive= isActive;
     }
 
     public static List<SchoolPerson> getUsers(){
@@ -61,8 +63,9 @@ public class SchoolPerson {
                 String auxMail = res.getString("mail");
                 String auxPhone = res.getString("phone");
                 Date auxBDate = res.getDate("birthDate");
+                int auxIsActive = res.getInt("isActive");
 
-                aux.add(new SchoolPerson(auxFName, auxLName, auxId, auxRole, auxMail, auxPhone, auxBDate, auxIsAdmin));
+                aux.add(new SchoolPerson(auxFName, auxLName, auxId, auxRole, auxMail, auxPhone, auxBDate, auxIsAdmin, auxIsActive));
 
 
             }

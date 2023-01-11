@@ -139,10 +139,21 @@ public class loginController {
             stage.setScene(scene);
             stage.show();
         }
-        else if(activeUser.role == 2)
+        else if(activeUser.role == 2 && activeUser.isActive==1)
         {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("registerStudent.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("ClassRegister | Register");
+            stage.setScene(scene);
+            stage.show();
+        }
+        else if(activeUser.role == 2)
+        {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("activateStudent.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);

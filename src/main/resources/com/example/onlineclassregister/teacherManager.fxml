@@ -79,10 +79,10 @@
                <children>
                   <TextField fx:id="filterField" layoutX="8.0" layoutY="14.0" prefHeight="29.0" prefWidth="171.0" promptText="   Search" style="-fx-background-radius: 25; -fx-border-radius: 25; -fx-background-color: #fff; -fx-border-color: #fff;" />
                   <ListView fx:id="id" layoutX="14.0" layoutY="90.0" prefHeight="333.0" prefWidth="31.0" />
-                  <ListView fx:id="name" layoutX="45.0" layoutY="90.0" prefHeight="333.0" prefWidth="134.0" />
-                  <ListView fx:id="email" layoutX="179.0" layoutY="90.0" prefHeight="333.0" prefWidth="118.0" />
-                  <ListView fx:id="className" layoutX="378.0" layoutY="90.0" prefHeight="333.0" prefWidth="41.0" />
-                  <ListView fx:id="edit" layoutX="418.0" layoutY="90.0" prefHeight="333.0" prefWidth="51.0" />
+                  <ListView fx:id="name" layoutX="45.0" layoutY="90.0" prefHeight="333.0" prefWidth="124.0" />
+                  <ListView fx:id="email" layoutX="169.0" layoutY="90.0" prefHeight="333.0" prefWidth="124.0" />
+                  <ListView fx:id="className" layoutX="366.0" layoutY="90.0" prefHeight="333.0" prefWidth="41.0" />
+                  <ListView fx:id="edit" layoutX="406.0" layoutY="90.0" prefHeight="333.0" prefWidth="63.0" />
                   <Pane layoutX="14.0" layoutY="55.0" prefHeight="35.0" prefWidth="455.0" style="-fx-background-color: #fff;">
                      <children>
                         <Label alignment="CENTER" layoutX="7.0" layoutY="9.0" prefHeight="15.0" prefWidth="21.0" text="id">
@@ -90,34 +90,34 @@
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="31.0" layoutY="10.0" prefHeight="15.0" prefWidth="135.0" text="name" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="31.0" layoutY="10.0" prefHeight="15.0" prefWidth="122.0" text="name" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="170.0" layoutY="10.0" prefHeight="15.0" prefWidth="108.0" text="email" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="153.0" layoutY="9.0" prefHeight="15.0" prefWidth="126.0" text="email" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="369.0" layoutY="10.0" prefHeight="15.0" prefWidth="28.0" text="class" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="359.0" layoutY="10.0" prefHeight="15.0" prefWidth="28.0" text="class" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="404.0" layoutY="10.0" prefHeight="15.0" prefWidth="43.0" text="edit" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="394.0" layoutY="10.0" prefHeight="15.0" prefWidth="60.0" text="edit" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="284.0" layoutY="10.0" prefHeight="15.0" prefWidth="77.0" text="subject" textAlignment="CENTER">
+                        <Label alignment="CENTER" layoutX="279.0" layoutY="10.0" prefHeight="15.0" prefWidth="74.0" text="subject" textAlignment="CENTER">
                            <font>
                               <Font name="Century Gothic" size="12.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <ListView fx:id="subject" layoutX="297.0" layoutY="90.0" prefHeight="333.0" prefWidth="81.0" />
+                  <ListView fx:id="subject" layoutX="292.0" layoutY="90.0" prefHeight="333.0" prefWidth="74.0" />
                </children>
             </Pane>
          </children>

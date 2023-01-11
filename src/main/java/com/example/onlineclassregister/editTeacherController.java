@@ -1,6 +1,7 @@
 package com.example.onlineclassregister;
 
 import conn.dbConnection;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,6 +11,9 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class editTeacherController {
 
@@ -37,13 +41,13 @@ public class editTeacherController {
     private PasswordField password;
 
     @FXML
-    private ComboBox<Class> classTeacher;
+    private ComboBox<String> classTeacher;
 
     @FXML
-    private ComboBox<Subject> subject;
+    private ComboBox<String> subject;
 
     @FXML
-    private ListView<Class> classes;
+    private ListView<String> classes;
 
     @FXML
     private ListView<CheckBox> checkBoxList;
@@ -96,6 +100,34 @@ public class editTeacherController {
         title.setText("You'll now be editing "+t.fName+ " "+ t.lName);
         deleteConfirmButton.setDisable(true);
         deleteConfirmButton.setOpacity(0);
+
+        Map<Integer, String> subjectNames = Subject.initSubject();
+
+        for (Map.Entry<Integer, String> entry : subjectNames.entrySet()) {
+            subject.getItems().add(entry.getValue());
+        }
+
+        List<Class> classes1= Class.getAllClassesList();
+
+        for(Class c: classes1)
+            classTeacher.getItems().add(c.name);
+
+        classes.setFixedCellSize(30);
+
+        for(Class c: classes1)
+        {
+            classes.getItems().add(c.name);
+
+            checkBoxList.setFixedCellSize(30);
+            CheckBox cbx = new CheckBox();
+            cbx.setUserData(c);
+
+            if(teacher.ClassesId.contains(c))
+                cbx.setSelected(true);
+            checkBoxList.getItems().add(cbx);
+        }
+
+
     }
 
     public void setTeacher(Teacher s) {
@@ -103,60 +135,143 @@ public class editTeacherController {
     }
     public void addButtonClick(ActionEvent actionEvent) {
 
-        String updateStmt = "UPDATE users SET ";
-        boolean ok=false;
+        Map<Integer, String> subjectNames = Subject.initSubject();
 
-        if(!fName.getText().isEmpty()) {
-            ok=true;
+        String updateStmt = "UPDATE users SET ";
+        boolean ok = false;
+
+        if (!fName.getText().isEmpty()) {
+            ok = true;
             updateStmt += "fName = '" + fName.getText() + "', ";
         }
-        if(!lName.getText().isEmpty()) {
-            ok=true;
+        if (!lName.getText().isEmpty()) {
+            ok = true;
             updateStmt += "lName = '" + lName.getText() + "', ";
         }
-        if(!email.getText().isEmpty() && emailOk(email.getText())) {
-            ok=true;
+        if (!email.getText().isEmpty() && emailOk(email.getText())) {
+            ok = true;
             updateStmt += "email = '" + email.getText() + "', ";
-        }
-        else if(!email.getText().isEmpty())
+        } else if (!email.getText().isEmpty()) {
             email.setPromptText("Please provide a correct email!");
+        }
 
-        if(!password.getText().isEmpty()) {
-            ok=true;
+        if (!password.getText().isEmpty()) {
+            ok = true;
             updateStmt += "password = '" + password.getText() + "', ";
         }
-        // Remove trailing comma
+
+// Remove trailing comma
         updateStmt = updateStmt.substring(0, updateStmt.length() - 2);
-        // Add WHERE clause to update specific record
+// Add WHERE clause to update specific record
         updateStmt += " WHERE id = " + teacher.userId + ";";
 
-        Boolean ok2=false;
-        String updateStmt2="UPDATE teacher SET";
+        Boolean ok2 = false;
+        String updateStmt2 = "UPDATE teacher SET";
+        String updateStmt3= "";
+        String updateStmt4= "";
 
-        if(classTeacher.getValue() != null) {
-            ok2=true;
-            updateStmt2 += "classTeacherId = '" + classTeacher.getValue().id + "', ";
-        }
-        if(subject.getValue() != null) {
-            ok2=true;
-            updateStmt2 += "subjectId = '" + subject.getValue().id + "', ";
+        Boolean ok3=false;
+        if (classTeacher.getValue() != null) {
+            ok2 = true;
+            ok3=true;
+
+            List<Class> classes = Class.getAllClassesList();
+
+            int id = -1;
+            for (Class c : classes) {
+                if (c.name.equals(classTeacher.getValue())) {
+                    id = c.id;
+                }
+            }
+
+            updateStmt2 += " classTeacherId = " + id + ", ";
+            updateStmt4 = "Update class set classTeacherId = 0 WHERE classTeacherId= "+teacher.userId+ ";";
+            updateStmt3 = " Update class set classTeacherId =" + teacher.userId + " WHERE id = "+ id + ";";
         }
 
-        // Remove trailing comma
-        updateStmt2 = updateStmt.substring(0, updateStmt.length() - 2);
-        // Add WHERE clause to update specific record
+
+        if (subject.getValue() != null) {
+            ok2 = true;
+            int id = -1;
+            for (Map.Entry<Integer, String> entry : subjectNames.entrySet()) {
+                if (entry.getValue().equals(subject.getValue())) {
+                    id = entry.getKey();
+                }
+            }
+
+            updateStmt2 += "subjectId = " +  id + ", ";
+
+        }
+
+// Remove trailing comma
+        updateStmt2 = updateStmt2.substring(0, updateStmt2.length() - 2);
+// Add WHERE clause to update specific record
         updateStmt2 += " WHERE userId = " + teacher.userId + ";";
 
+    boolean ok4=false;
+
+        List<Integer> classesIds = new ArrayList<>();
+        for(CheckBox cbx: checkBoxList.getItems())
+            if(cbx.isSelected()) {
+                Class c = (Class) cbx.getUserData();
+                ok4=true;
+                classesIds.add(c.id);
+
+            }
+
+        for(Integer i: classesIds)
+        {
+            if(!teacher.ClassesId.contains(i))
+                teacher.ClassesId.add(i);
+        }
+
+        for(Integer i: teacher.ClassesId)
+            if(!classesIds.contains(i))
+                teacher.ClassesId.remove(i);
+
+        int len=0;
+        for(Integer i: teacher.ClassesId)
+            len++;
+        ///SEt classes count to length of classes Id
+        ///Rewrite columns, deleting not reqiored
+        String updateStmt5 = "UPDATE teacher SET classesCount= "+len+", ";
+        String updateStmt6 = "";
+        if(teacher.classesCount<len)
+            for(int i=1; i<=(teacher.classesCount-len); i++)
+                updateStmt6+="ALTER TABLE teacher ADD class"+teacher.classesCount+i+" INT NOT NULL;";
+
+        int index=1;
+        for(Integer id: teacher.ClassesId) {
+            updateStmt5 += " class" + index + " = " +id+", ";
+
+        }
+
+        updateStmt5 = updateStmt5.substring(0, updateStmt5.length() - 2);
+// Add WHERE clause to update specific record
+        updateStmt5 += " WHERE userId = " + teacher.userId + ";";
 
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
 
         try {
             Statement stmt = conn.createStatement();
-            if(ok)
-            stmt.executeUpdate(updateStmt);
-            if(ok2)
-            stmt.executeUpdate(updateStmt2);
+            if (ok) {
+                stmt.executeUpdate(updateStmt);
+            }
+            if (ok2) {
+                stmt.executeUpdate(updateStmt2);
+            }
+            if(ok3)
+            {
+                stmt.executeUpdate(updateStmt4);
+                stmt.executeUpdate(updateStmt3);
+
+            }
+            if(ok4)
+            {
+                stmt.executeUpdate(updateStmt6);
+                stmt.executeUpdate(updateStmt5);
+            }
 
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
@@ -166,8 +281,7 @@ public class editTeacherController {
         }
 
 
-
-    }
+        }
 
     private boolean emailOk(String text) {
 

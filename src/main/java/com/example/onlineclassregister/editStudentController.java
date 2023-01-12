@@ -144,15 +144,17 @@ public class editStudentController {
             updateStmt += "password = '" + password1 + "', ";
         }
         // Remove trailing comma
-        updateStmt = updateStmt.substring(0, updateStmt.length() - 2);
-        // Add WHERE clause to update specific record
-        updateStmt += " WHERE id = "+ student.userId + ";";
+        if(stmt1) {
+            updateStmt = updateStmt.substring(0, updateStmt.length() - 2);
+            // Add WHERE clause to update specific record
+            updateStmt += " WHERE id = " + student.userId + ";";
+        }
 
         Map<Integer, String> classNames= Class.getAllClassesMap();
 
         String updateStmt2="";
         boolean stmt2=false;
-        if(!className.getValue().isEmpty())
+        if(className.getValue() != null)
         {
             stmt2=true;
             int classId=-1;
@@ -167,33 +169,41 @@ public class editStudentController {
             updateStmt2="UPDATE student SET classId="+classId+" where userId="+ student.userId+";";
         }
 
+
         String updateStmt3="UPDATE users SET ";
         boolean stmt3=false;
 
+        String parentFnameS = parentFName.getText();
+        String parentLnameS= parentLName.getText();
+        String parentEmailS = parentEmail.getText();
+        String parentPhoneS = parentPhone.getText();
+
         if(!parentFName.getText().isEmpty()){
+            updateStmt3+="fName= '"+parentFnameS+"', ";
             stmt3=true;
-            updateStmt3+="fName="+ parentFName.getText()+", ";
         }
         if(!parentLName.getText().isEmpty()){
+            updateStmt3+="lName= '"+parentLnameS+"', ";
             stmt3=true;
-            updateStmt3+="lName="+ parentLName.getText()+", ";
         }
-        if(!parentEmail.getText().isEmpty() && emailOk(parentEmail.getText())){
+        if(!parentEmail.getText().isEmpty()){
+            updateStmt3+="mail= '"+parentEmailS+"', ";
             stmt3=true;
-            updateStmt3+="mail="+ parentEmail.getText()+", ";
         }
         if(!parentPhone.getText().isEmpty()){
+            updateStmt3+="phone= '"+parentPhoneS+"', ";
             stmt3=true;
-            updateStmt3+="phone="+ parentPhone.getText()+", ";
         }
 
-        // Remove trailing comma
-        updateStmt = updateStmt.substring(0, updateStmt.length() - 2);
-        // Add WHERE clause to update specific record
-        updateStmt += " WHERE id = "+ student.parent1Id + ";";
+        if(stmt3) {
+            // Remove trailing comma
+            updateStmt3 = updateStmt3.substring(0, updateStmt3.length() - 2);
+            // Add WHERE clause to update specific record
+            updateStmt3 += " WHERE id = " + student.parent1Id + ";";
+        }
 
 
-
+        System.out.println(updateStmt3);
 
         dbConnection dbConn = new dbConnection();
         Connection conn= dbConn.getConnection();

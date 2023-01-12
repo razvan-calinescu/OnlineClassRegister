@@ -11,8 +11,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.xml.transform.Result;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -210,7 +212,10 @@ public class activateStudentController {
 
         if(!parentPhone.getText().isEmpty()){
             stmt3=true;
-            updateStmt3+="'"+parentPhone.getText()+"', '"+parentEmail.getText().substring(0,5)+"')";
+            md5 md5Helper = new md5();
+            String pass=parentEmail.getText().substring(0,5);
+            pass=md5Helper.getMd5(pass);
+            updateStmt3+="'"+parentPhone.getText()+"', '"+pass+"')";
         }else {
             parentPhone.setStyle("-fx-border-color: red;");
             throw new RuntimeException("Empty parent phone");
@@ -219,6 +224,7 @@ public class activateStudentController {
 
 
         String stmtActivate = "UPDATE users SET isActive = 1 WHERE id=" + loggedUser.userId+"; ";
+        String stmtParentId = "Select parent1Id from users where LOWER(mail)=LOWER("+ parentEmail.getText()+ ");";
 
 
         try{
@@ -226,6 +232,16 @@ public class activateStudentController {
             stmt.executeUpdate(updateStmt2);
             stmt.executeUpdate(updateStmt3);
             stmt.executeUpdate(stmtActivate);
+            ResultSet rs = stmt.executeQuery(stmtParentId);
+            int parentId=-1;
+
+            /// Add parent id to students table
+            while(rs.next())
+            {
+                parentId=rs.getInt("parent1Id");
+            }
+
+            String stmt4="UPDATE student Set parent1Id="+parentId+" WHERE userId="+loggedUser.userId+";";
 
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("registerStudent.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 850, 700);

@@ -13,8 +13,11 @@ public class Student extends SchoolPerson{
     public int  classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, studId;
     public double average;
     public List<Integer> coursesAttended = new ArrayList<>();
+    public List<regEntry> regEntries = new ArrayList<>();
 
-    public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId, int isActive) {
+    public Map<Integer, Double> averages = new HashMap<>();
+
+    public Student(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int classId, int totalMissingAttendance, int totalMotivated, int userId, int parent1Id, int parent2Id, int coursesCount, double average, List<Integer> coursesAttended, int studId, int isActive, List<regEntry> regEntries, Map<Integer, Double> averages) {
         super(fName, lName, id, role, mail, phone, birthDate, false, isActive);
         this.classId = classId;
         this.totalMissingAttendance = totalMissingAttendance;
@@ -25,6 +28,8 @@ public class Student extends SchoolPerson{
         this.coursesCount = coursesCount;
         this.average = average;
         this.coursesAttended = coursesAttended;
+        this.regEntries= regEntries;
+        this.averages = averages;
     }
 
 
@@ -72,11 +77,61 @@ public class Student extends SchoolPerson{
                 int isAct = rs.getInt("isActive");
 
 
-                auxS=new Student(fName, lName, userId, role, mail, phone, birthDate, classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, average, courseIds, studId, isAct );
-                aux.add(auxS);
+                List<regEntry> regEnts = new ArrayList<>();
+
+                Statement stmt2=conn.createStatement();
+                ResultSet res2=stmt2.executeQuery("Select * from register"+userId+";");
+
+                Map<Integer, Double> avgs = new HashMap<>();
+
+
+                while(res2.next()) {
+                    if (res2.getInt("isGrade") == 1) {
+
+                        regEntry rg = new regEntry(res2.getInt("subjectId"), res2.getDate("date"));
+                        rg.setValue(res2.getDouble("gradeValue"));
+                        regEnts.add(rg);
+
+                    } else if (res2.getInt("isAbsence") == 1) {
+
+                        regEntry rg = new regEntry(res2.getInt("subjectId"), res2.getDate("date"));
+                        if (res2.getInt("motivated") == 1)
+                            rg.setMotivated(true);
+                        else
+                            rg.setMotivated(false);
+
+                        regEnts.add(rg);
+                    }
+
+
+
+                    List<Subject> subjects = Subject.initSubjectList();
+                    for (Subject s : subjects) {
+
+                    double savg=0;
+                    int count = 0;
+
+                    for (regEntry regEnt : regEnts)
+                        if (regEnt.subjectId == s.id)
+                            if(regEnt.value != 0)
+                        {
+                            savg+=regEnt.value;
+                            count ++;
+                        }
+
+                        avgs.put(s.id, savg);
+
+                     }
+
             }
 
 
+
+                auxS=new Student(fName, lName, userId, role, mail, phone, birthDate, classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, average, courseIds, studId, isAct, regEnts, avgs );
+                aux.add(auxS);
+            }
+
+            conn.close();
         } catch (SQLException e){
             System.out.println("Error at SQL statement: ");
             e.printStackTrace();

@@ -101,16 +101,13 @@ public class editTeacherController {
         deleteConfirmButton.setDisable(true);
         deleteConfirmButton.setOpacity(0);
 
-        Map<Integer, String> subjectNames = Subject.initSubject();
-
-        for (Map.Entry<Integer, String> entry : subjectNames.entrySet()) {
-            subject.getItems().add(entry.getValue());
-        }
 
         List<Class> classes1= Class.getAllClassesList();
 
-        for(Class c: classes1)
+        for(Class c: classes1) {
             classTeacher.getItems().add(c.name);
+
+        }
 
         classes.setFixedCellSize(30);
 

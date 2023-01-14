@@ -1,6 +1,7 @@
 package com.example.onlineclassregister;
 
 import conn.dbConnection;
+import javafx.scene.control.ListView;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,18 +14,21 @@ import java.util.Map;
 
 public class Class {
 
-    int id, classTeacherId, studentsCount, year;
+    int id, classTeacherId, studentsCount, year, subjectsCount;
     String name, room;
+    List<Integer> subjectsTaught= new ArrayList<>();
 
     public static Map<Integer, String> allClassesName = new HashMap<>();
 
-    public Class(int id, int classTeacherId, int studentsCount, int year,  String name, String room) {
+    public Class(int id, int classTeacherId, int studentsCount, int year,  String name, String room, int subjectsCount, List<Integer> subjectsTaught) {
         this.id = id;
         this.classTeacherId = classTeacherId;
         this.studentsCount = studentsCount;
         this.year= year;
         this.name = name;
         this.room = room;
+        this.subjectsCount = subjectsCount;
+        this.subjectsTaught = subjectsTaught;
     }
 
 
@@ -71,7 +75,13 @@ public class Class {
                int auxStudentsCount = res.getInt("studentsCount");
                String auxRoom = res.getString("room");
 
-               aux.add(new Class(auxClassId, auxClassTeacherId, auxStudentsCount, auxYear, auxName, auxRoom));
+               int auxSubjectsCount = res.getInt("coursesCount");
+
+               List<Integer> auxSList = new ArrayList<>();
+               for(int i=1; i<=auxSubjectsCount; i++)
+                    auxSList.add(res.getInt(res.findColumn("coursesCount")+i));
+
+               aux.add(new Class(auxClassId, auxClassTeacherId, auxStudentsCount, auxYear, auxName, auxRoom,auxSubjectsCount, auxSList));
 
 
             }

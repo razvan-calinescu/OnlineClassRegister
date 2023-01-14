@@ -85,7 +85,7 @@
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>
             </Button>
-            <Button layoutX="73.0" layoutY="404.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Courses Management" textFill="WHITE">
+            <Button fx:id="subjects" layoutX="73.0" layoutY="404.0" mnemonicParsing="false" onAction="#subjectsView" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: transparent;" text="Courses Management" textFill="WHITE">
                <font>
                   <Font name="Century Gothic Bold" size="16.0" />
                </font>

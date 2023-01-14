@@ -4,5 +4,4 @@ public interface failable {
 
     public boolean isFailed();
 
-
 }

@@ -401,8 +401,8 @@ public class registerController {
         List<Teacher> teachers = new ArrayList<>();
         List<Student> students = new ArrayList<>();
 
-        teachers=getTeachers();
-        students=getStudents();
+        teachers=Teacher.getTeachers();
+        students=Student.getStudents();
 
 
         for(Teacher t: teachers)

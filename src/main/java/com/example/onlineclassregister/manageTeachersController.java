@@ -383,6 +383,7 @@ public class manageTeachersController {
             id.setItems(ids);
             name.setItems(names);
             subject.setItems(subjects);
+            email.setItems(emails);
             className.setItems(classNames);
             edit.setItems(edits);
 

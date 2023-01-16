@@ -112,7 +112,7 @@ public class adminController {
             }
 
 
-        titleAdmin.setText("Hello "+ admin.fName + ", this is your main page: ");
+   //     titleAdmin.setText("Hello "+ admin.fName + ", this is your main page: ");
         dateBar.setText("Currently logged-in: "+ admin.mail);
 
         ///personal details

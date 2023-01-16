@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -50,13 +51,102 @@ public class editTeacherController {
     private ListView<String> classes;
 
     @FXML
-    private ListView<CheckBox> checkBoxList;
+    private ChoiceBox<String> availClasses;
 
     @FXML
     private Button deleteButton;
 
     @FXML
     private Button deleteConfirmButton;
+
+    @FXML
+    private Button addClass;
+
+    @FXML
+    private Button deleteClass;
+
+    @FXML
+    private TextField deleteClassField;
+
+    @FXML
+    private Label alertText;
+
+    private List<Integer> addedClasses = new ArrayList<>();
+    private List<Integer> removedClasses = new ArrayList<>();
+
+    @FXML
+    private void removeClassClick() throws SQLException {
+        if(deleteClassField.getText().isEmpty())
+        {
+            deleteClassField.setStyle("-fx-border-color: red;");
+            deleteClassField.setPromptText("id");
+        } else
+        {
+            int id = Integer.parseInt(deleteClassField.getText());
+            teacher.ClassesId.remove((Integer)id);
+        }
+
+        dbConnection dbConn = new dbConnection();
+        Connection conn = dbConn.getConnection();
+
+        Statement stmt = conn.createStatement();
+        classes.getItems().clear();
+        for (int i = 1; i <= teacher.ClassesId.size(); i++) {
+            String SQL = "UPDATE teacher SET class" + i + "= " + teacher.ClassesId.get(i-1) + " WHERE userId=" + teacher.userId + ";";
+            stmt.executeUpdate(SQL);
+        }
+
+        for (int i = teacher.ClassesId.size() + 1; i <= 28; i++) {
+            String SQL = "UPDATE teacher SET class" + i + "= -1 WHERE userId=" + teacher.userId + ";";
+            stmt.executeUpdate(SQL);
+        }
+        for(Integer id: teacher.ClassesId)
+            classes.getItems().add(Class.getAllClassesMap().get(id) + " - id: "+ id);
+
+        for(Integer i: teacher.ClassesId)
+            classTeacher.getItems().add(Class.getAllClassesMap().get(i));
+    }
+
+
+    @FXML
+    private void addClassClick() throws SQLException {
+
+        if(availClasses.getValue().isEmpty())
+        {
+            alertText.setStyle("-fx-color: red");
+            alertText.setText("Choose a class before adding!");
+        }
+        else
+        {
+            alertText.setStyle("-fx-color: black");
+            alertText.setText("Already Assigned Classes");
+            for(Class c: Class.getAllClassesList())
+                if(c.name.equals(availClasses.getValue()))
+                    teacher.ClassesId.add(c.id);
+        }
+
+        dbConnection dbConn = new dbConnection();
+        Connection conn = dbConn.getConnection();
+
+        PreparedStatement pstmt;
+        classes.getItems().clear();
+
+        for(int i=0; i<teacher.ClassesId.size(); i++)
+        {
+            String SQL = "UPDATE teacher SET class"+(i+1)+"= ? WHERE userId= ?";
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setInt(1, teacher.ClassesId.get(i));
+            pstmt.setInt(2, teacher.userId);
+            pstmt.executeUpdate();
+        }
+
+        for(Integer id: teacher.ClassesId)
+            classes.getItems().add(Class.getAllClassesMap().get(id));
+
+        for(Integer i: teacher.ClassesId)
+            classTeacher.getItems().add(Class.getAllClassesMap().get(i));
+    }
+
 
 
     @FXML
@@ -96,7 +186,7 @@ public class editTeacherController {
 
 
     @FXML
-    public void initialize(Teacher t){
+    public void initialize(Teacher t) throws SQLException {
         title.setText("You'll now be editing "+t.fName+ " "+ t.lName);
         deleteConfirmButton.setDisable(true);
         deleteConfirmButton.setOpacity(0);
@@ -104,25 +194,24 @@ public class editTeacherController {
 
         List<Class> classes1= Class.getAllClassesList();
 
-        for(Class c: classes1) {
-            classTeacher.getItems().add(c.name);
 
-        }
 
         classes.setFixedCellSize(30);
 
         for(Class c: classes1)
         {
-            classes.getItems().add(c.name);
+            if(teacher.ClassesId.contains(c.id))
+            classes.getItems().add(c.name+" - id: "+c.id);
+            else
+                availClasses.getItems().add(c.name);
 
-            checkBoxList.setFixedCellSize(30);
-            CheckBox cbx = new CheckBox();
-            cbx.setUserData(c);
-
-            if(teacher.ClassesId.contains(c))
-                cbx.setSelected(true);
-            checkBoxList.getItems().add(cbx);
         }
+
+        for(Integer i: teacher.ClassesId)
+            classTeacher.getItems().add(Class.getAllClassesMap().get(i));
+
+        for(Subject s: Subject.initSubjectList())
+            subject.getItems().add(s.name);
 
 
     }
@@ -205,47 +294,6 @@ public class editTeacherController {
 // Add WHERE clause to update specific record
         updateStmt2 += " WHERE userId = " + teacher.userId + ";";
 
-    boolean ok4=false;
-
-        List<Integer> classesIds = new ArrayList<>();
-        for(CheckBox cbx: checkBoxList.getItems())
-            if(cbx.isSelected()) {
-                Class c = (Class) cbx.getUserData();
-                ok4=true;
-                classesIds.add(c.id);
-
-            }
-
-        for(Integer i: classesIds)
-        {
-            if(!teacher.ClassesId.contains(i))
-                teacher.ClassesId.add(i);
-        }
-
-        for(Integer i: teacher.ClassesId)
-            if(!classesIds.contains(i))
-                teacher.ClassesId.remove(i);
-
-        int len=0;
-        for(Integer i: teacher.ClassesId)
-            len++;
-        ///SEt classes count to length of classes Id
-        ///Rewrite columns, deleting not reqiored
-        String updateStmt5 = "UPDATE teacher SET classesCount= "+len+", ";
-        String updateStmt6 = "";
-        if(teacher.classesCount<len)
-            for(int i=1; i<=(teacher.classesCount-len); i++)
-                updateStmt6+="ALTER TABLE teacher ADD class"+teacher.classesCount+i+" INT NOT NULL;";
-
-        int index=1;
-        for(Integer id: teacher.ClassesId) {
-            updateStmt5 += " class" + index + " = " +id+", ";
-
-        }
-
-        updateStmt5 = updateStmt5.substring(0, updateStmt5.length() - 2);
-// Add WHERE clause to update specific record
-        updateStmt5 += " WHERE userId = " + teacher.userId + ";";
 
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
@@ -264,11 +312,7 @@ public class editTeacherController {
                 stmt.executeUpdate(updateStmt3);
 
             }
-            if(ok4)
-            {
-                stmt.executeUpdate(updateStmt6);
-                stmt.executeUpdate(updateStmt5);
-            }
+
 
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();

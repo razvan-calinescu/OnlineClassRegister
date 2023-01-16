@@ -1,5 +1,6 @@
 package com.example.onlineclassregister;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -64,6 +65,73 @@ public class manageStudentsController {
 
 
     private final ObservableList<Student> dataList = FXCollections.observableArrayList();
+
+
+    private void filterStudents(String filter) throws SQLException {
+        List<Student> studentList = Student.getStudents();
+        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
+
+        // Create new lists to hold filtered data
+        ObservableList<Integer> ids = FXCollections.observableArrayList();
+        ObservableList<String> names = FXCollections.observableArrayList();
+        ObservableList<String> emails = FXCollections.observableArrayList();
+        ObservableList<String> parents = FXCollections.observableArrayList();
+        ObservableList<String> classNames = FXCollections.observableArrayList();
+        ObservableList<Button> edits = FXCollections.observableArrayList();
+
+        for (Student s : studentList) {
+            if (s.fName.toLowerCase().contains(filter.toLowerCase()) || s.lName.toLowerCase().contains(filter.toLowerCase()) || s.mail.toLowerCase().contains(filter.toLowerCase())) {
+                ids.add(s.userId);
+                if(s.fName==null)
+                    names.add("Account Inactive");
+                else
+                    names.add(s.fName + " " + s.lName);
+
+                if(s.mail==null)
+                    emails.add("Account Inactive");
+                else
+                    emails.add(s.mail);
+
+                if(s.classId==0)
+                    classNames.add(" - ");
+                else
+                    classNames.add(classNamesMap.get(s.classId));
+
+                if(s!=null) {
+                    Button b = new Button();
+                    b.setText("Edit");
+                    b.setUserData(s);
+                    b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                    b.setPrefWidth(54);
+                    b.setPrefHeight(23);
+                    b.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            try {
+                                editButtonClick(b);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                    edits.add(b);
+                }
+            }
+        }
+
+        // Set the filtered data to the ListViews
+        Platform.runLater(() -> {
+            id.setItems(ids);
+            name.setItems(names);
+            email.setItems(emails);
+            className.setItems(classNames);
+            edit.setItems(edits);
+        });
+    }
+
+
 
     @FXML
     private void initialize() throws SQLException {
@@ -130,34 +198,16 @@ public class manageStudentsController {
 // parent.setItems(parents);
         className.setItems(classNames);
         edit.setItems(edits);
-
         filterField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // When the search string changes, update the list to only show items that match
-            ObservableList<Integer> filteredIds = FXCollections.observableArrayList();
-            ObservableList<String> filteredNames = FXCollections.observableArrayList();
-            ObservableList<String> filteredEmails = FXCollections.observableArrayList();
-            ObservableList<String> filteredParents = FXCollections.observableArrayList();
-            ObservableList<String> filteredClassNames = FXCollections.observableArrayList();
-            ObservableList<Button> filteredEdits = FXCollections.observableArrayList();
-
-            for (int i = 0; i < ids.size(); i++) {
-                String studentName = names.get(i);
-                if (studentName.toLowerCase().contains(newValue.toLowerCase())) {
-                    filteredIds.add(ids.get(i));
-                    filteredNames.add(studentName);
-                    filteredEmails.add(emails.get(i));
-                    // filteredParents.add(parents.get(i));
-                    filteredClassNames.add(classNames.get(i));
-                    filteredEdits.add(edits.get(i));
+            // Create a new thread to perform the filtering
+            Thread filterThread = new Thread(() -> {
+                try {
+                    filterStudents(newValue);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
-            }
-
-            id.setItems(filteredIds);
-            name.setItems(filteredNames);
-            email.setItems(filteredEmails);
-// parent.setItems(filteredParents);
-            className.setItems(filteredClassNames);
-            edit.setItems(filteredEdits);
+            });
+            filterThread.start();
         });
     }
 

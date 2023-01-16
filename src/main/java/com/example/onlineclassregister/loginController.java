@@ -196,6 +196,7 @@ public class loginController {
                 countRes++;
                 System.out.println(res.getString("mail"));
                 userId=res.getInt("id");
+                System.out.println("logged In!");
             }
 
             conn.close();

@@ -35,7 +35,7 @@ public class editClassController {
     private TextField room;
 
     @FXML
-    private ComboBox<Teacher> classTeacher;
+    private ComboBox<String> classTeacher;
 
     @FXML
     private Button deleteButton;
@@ -85,7 +85,7 @@ public class editClassController {
 
         List<Teacher> teachers = Teacher.getTeachers();
         for(Teacher t: teachers)
-            classTeacher.getItems().add(t);
+            classTeacher.getItems().add(t.fName+" "+t.lName);
     }
 
     public void setStudent(Class c) {
@@ -102,7 +102,9 @@ public class editClassController {
 
       Integer classTeacherIdSQL = null;
       if(classTeacher.getValue() != null)
-       classTeacherIdSQL = classTeacher.getValue().userId;
+          for(Teacher t: Teacher.getTeachers())
+              if(classTeacher.getValue().equals(t.fName+" "+t.lName))
+       classTeacherIdSQL = t.userId;
 
 
         String updateStmt ="UPDATE class SET ";

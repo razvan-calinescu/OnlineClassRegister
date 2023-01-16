@@ -52,8 +52,9 @@ public class Teacher extends SchoolPerson{
                 List<Integer> auxClasses = new ArrayList<>();
 
                 int classesCountColId=rs.findColumn("classesCount");
-                for(int i=0; i<auxClassesCount; i++)
-                    auxClasses.add(rs.getInt(classesCountColId)+i+1);
+                for(int i=1; i<=28; i++)
+                    if(rs.getInt("class"+i)!=-1)
+                    auxClasses.add(rs.getInt("class"+i));
 
 
                 int auxUserId = rs.getInt("users.id");

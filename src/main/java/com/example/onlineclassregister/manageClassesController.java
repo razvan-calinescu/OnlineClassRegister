@@ -152,6 +152,7 @@ public class manageClassesController {
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
         for (Class c : classList) {
+            System.out.println(c.getAverage());
 
             List<Teacher> teachers = Teacher.getTeachers();
 

@@ -88,36 +88,48 @@ public class Subject implements hasAverage {
     @Override
     public double getAverage() {
 
-        List<Class> classes=Class.getAllClassesList();
-        List<Student> students= Student.getStudents();
+        double ms=0;
+        int ks=0;
 
-        double avg=0;
-        int k=0;
+        for(Teacher t: Teacher.getTeachers()){
 
-        for(Class c: classes) {
-            double cAvg=0;
-            int avgCount=0;
-            if (c.subjectsTaught.contains(this.id)) {
-                System.out.println();
-                double avg1=0;
-                int avgCount1=0;
-                for (Student s : students)
-                    if (s.classId == c.id)
-                        if (s.averages.containsKey(this.id))
+            double mt=0;
+            int kt=0;
+            if(t.subjectId==this.id){
+            for(Integer i: t.ClassesId)
+            {
+                double mc=0;
+                int kc=0;
+
+                for(Student s: Student.getStudents())
                 {
-                    avg1+=s.averages.get(this.id);
-                    avgCount1++;
+                    double mst=0;
+                    int kst=0;
+
+                    for(regEntry re: s.regEntries)
+                        if(re.subjectId==this.id && re.value!=0)
+                        {
+                            mst+=re.value;
+                            kst++;
+                        }
+                    mc+=mst/kst;
+                    kc++;
                 }
-                cAvg+=(avg1/avgCount1);
-                avgCount++;
+                mt+=mc/kc;
+                kt++;
             }
-            avg+=cAvg/avgCount;
-            k++;
+            ms+=mt/kt;
+            ks++;
+            }
+
+
+
         }
 
-        if(avg!=0)
-            return avg/k;
+        if(ks>0)
+            return ms/ks;
         else
-            return 0.0;
+            return 0;
+
     }
 }

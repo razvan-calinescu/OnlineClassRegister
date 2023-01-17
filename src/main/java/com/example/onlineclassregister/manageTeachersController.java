@@ -85,6 +85,7 @@ public class manageTeachersController {
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
         for (Teacher t : teacherList) {
+            System.out.println(t.getAverage());
             ids.add(t.userId);
             if(t.fName==null)
                 names.add("Account Inactive");

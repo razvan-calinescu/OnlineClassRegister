@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Class {
+public class Class implements  hasAverage{
 
     int id, classTeacherId, studentsCount, year, subjectsCount;
     String name, room;
@@ -95,5 +95,23 @@ public class Class {
 
         return aux;
 
+    }
+
+    @Override
+    public double getAverage() {
+        double m=0;
+        int k=0;
+
+        for(Student s: Student.getStudents())
+            if(s.classId==this.id)
+            {
+                m+=s.getAverage();
+                k++;
+            }
+
+        if(k>0)
+            return m/k;
+        else
+            return 0;
     }
 }

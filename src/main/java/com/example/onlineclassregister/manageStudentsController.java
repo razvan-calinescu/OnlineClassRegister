@@ -44,6 +44,8 @@ public class manageStudentsController {
     @FXML
     private ListView<Button> edit;
 
+    @FXML
+    private ListView<Double> avg;
 
     @FXML
     private Button exitButton;
@@ -75,7 +77,7 @@ public class manageStudentsController {
         ObservableList<Integer> ids = FXCollections.observableArrayList();
         ObservableList<String> names = FXCollections.observableArrayList();
         ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<String> parents = FXCollections.observableArrayList();
+        ObservableList<Double> avgs = FXCollections.observableArrayList();
         ObservableList<String> classNames = FXCollections.observableArrayList();
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
@@ -96,6 +98,11 @@ public class manageStudentsController {
                     classNames.add(" - ");
                 else
                     classNames.add(classNamesMap.get(s.classId));
+
+                if(s.getAverage()==0)
+                    avgs.add(0.0);
+                else
+                    avgs.add(s.getAverage());
 
                 if(s!=null) {
                     Button b = new Button();
@@ -126,6 +133,7 @@ public class manageStudentsController {
             id.setItems(ids);
             name.setItems(names);
             email.setItems(emails);
+            avg.setItems(avgs);
             className.setItems(classNames);
             edit.setItems(edits);
         });
@@ -148,7 +156,7 @@ public class manageStudentsController {
         ObservableList<Integer> ids = FXCollections.observableArrayList();
         ObservableList<String> names = FXCollections.observableArrayList();
         ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<String> parents = FXCollections.observableArrayList();
+        ObservableList<Double> avgs = FXCollections.observableArrayList();
         ObservableList<String> classNames = FXCollections.observableArrayList();
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
@@ -168,6 +176,13 @@ public class manageStudentsController {
                 classNames.add(" - ");
             else
                 classNames.add(classNamesMap.get(s.classId));
+
+
+            if(s.getAverage()==0)
+                avgs.add(0.0);
+            else
+                avgs.add(s.getAverage());
+
 
             if(s!=null) {
                 Button b = new Button();
@@ -195,7 +210,7 @@ public class manageStudentsController {
         id.setItems(ids);
         name.setItems(names);
         email.setItems(emails);
-// parent.setItems(parents);
+        avg.setItems(avgs);
         className.setItems(classNames);
         edit.setItems(edits);
         filterField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -230,14 +245,14 @@ public class manageStudentsController {
         id.refresh();
         name.refresh();
         email.refresh();
-        //parent.refresh();
+        avg.refresh();
         className.refresh();
         edit.refresh();
 
         ObservableList<Integer> ids = FXCollections.observableArrayList();
         ObservableList<String> names = FXCollections.observableArrayList();
         ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<String> parents = FXCollections.observableArrayList();
+        ObservableList<Double> avgs = FXCollections.observableArrayList();
         ObservableList<String> classNames = FXCollections.observableArrayList();
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
@@ -263,6 +278,12 @@ public class manageStudentsController {
             else
                 classNames.add(classNamesMap.get(st.classId));
 
+            if(s.getAverage()==0)
+                avgs.add(0.0);
+            else
+                avgs.add(s.getAverage());
+
+
             if(s!=null) {
                 Button bt = new Button();
                 bt.setText("Edit");
@@ -287,7 +308,7 @@ public class manageStudentsController {
             id.setItems(ids);
             name.setItems(names);
             email.setItems(emails);
-// parent.setItems(parents);
+            avg.setItems(avgs);
             className.setItems(classNames);
             edit.setItems(edits);
         }
@@ -357,14 +378,14 @@ public class manageStudentsController {
         id.refresh();
         name.refresh();
         email.refresh();
-        //parent.refresh();
+        avg.refresh();
         className.refresh();
         edit.refresh();
 
         ObservableList<Integer> ids = FXCollections.observableArrayList();
         ObservableList<String> names = FXCollections.observableArrayList();
         ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<String> parents = FXCollections.observableArrayList();
+        ObservableList<Double> avgs = FXCollections.observableArrayList();
         ObservableList<String> classNames = FXCollections.observableArrayList();
         ObservableList<Button> edits = FXCollections.observableArrayList();
 
@@ -390,6 +411,12 @@ public class manageStudentsController {
             else
                 classNames.add(classNamesMap.get(st.classId));
 
+
+            if(st.getAverage()==0)
+                avgs.add(0.0);
+            else
+                avgs.add(st.getAverage());
+
             if(st!=null) {
                 Button bt = new Button();
                 bt.setText("Edit");
@@ -414,7 +441,7 @@ public class manageStudentsController {
             id.setItems(ids);
             name.setItems(names);
             email.setItems(emails);
-// parent.setItems(parents);
+            avg.setItems(avgs);
             className.setItems(classNames);
             edit.setItems(edits);
 

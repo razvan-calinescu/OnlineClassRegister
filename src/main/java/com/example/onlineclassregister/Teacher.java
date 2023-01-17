@@ -1,6 +1,7 @@
 package com.example.onlineclassregister;
 
 import conn.dbConnection;
+import javafx.scene.control.Button;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,11 +9,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-public class Teacher extends SchoolPerson{
+public class Teacher extends SchoolPerson implements hasAverage{
 
+    Button edit;
 
-    int subjectId, weeklyClasses, classTeacherId, teacherId, classesCount; //classesCount = cate clase are in TOTAL, gen 3 daca are o a 9a, 2 a 10a etc
+    String fullName, subjectName, classTeacherName; /// TO DO Average
+    Double average;
+    int subjectId, weeklyClasses, classTeacherId, teacherId, classesCount;
     List<Integer> ClassesId = new ArrayList<>();
+
 
     Map<Integer, String> classesName = new HashMap<>();
 
@@ -95,5 +100,41 @@ public class Teacher extends SchoolPerson{
         }
 
         return aux;
+    }
+
+    @Override
+    public double getAverage() {
+        double media = 0;
+        int k=0;
+        for(Integer i: this.ClassesId)
+        {
+            double mediaClasei=0, kClasa=0;
+            for(Student s: Student.getStudents())
+            {
+                double ms=0;
+                int ks=0;
+
+                if(s.classId==i) {
+                    for (regEntry reg : s.regEntries)
+                        if (reg.value != 0 && reg.subjectId == this.subjectId) {
+                            ms += reg.value;
+                            ks++;
+                        }
+
+
+                mediaClasei+=ms;
+                kClasa++;
+                }
+
+            }
+
+            media+=mediaClasei;
+            k++;
+        }
+
+        if(k>0)
+            return media/k;
+        else
+            return 0;
     }
 }

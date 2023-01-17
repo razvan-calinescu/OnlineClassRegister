@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
-public class Student extends SchoolPerson{
+public class Student extends SchoolPerson implements hasAverage{
 
     public int  classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, studId;
     public double average;
@@ -139,6 +139,24 @@ public class Student extends SchoolPerson{
 
 
         return aux;
+    }
+
+    @Override
+    public double getAverage() {
+        double m=0;
+        int k=0;
+
+        for(regEntry reg: this.regEntries)
+            if(reg.value!=0)
+            {
+                m+=reg.value;
+                k++;
+            }
+
+        if(k>0)
+        return m/k;
+        else
+            return 0;
     }
 
 //    public static Map<String, java.sql.Date> getGrades(int studentId)

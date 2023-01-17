@@ -2,7 +2,7 @@ package com.example.onlineclassregister;
 
 import java.util.Date;
 
-public class regEntry implements isGrade, isAbsence {
+public class regEntry implements Gradable, motivateable {
 
     double value=0;
     boolean motivated=false;
@@ -31,6 +31,6 @@ public class regEntry implements isGrade, isAbsence {
 
     @Override
     public double getValue() {
-        return 0;
+        return this.value;
     }
 }

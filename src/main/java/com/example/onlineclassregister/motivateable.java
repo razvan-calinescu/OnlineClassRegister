@@ -1,6 +1,6 @@
 package com.example.onlineclassregister;
 
-public interface isAbsence {
+public interface motivateable {
 
     void setMotivated(boolean value);
     boolean getMotivated();

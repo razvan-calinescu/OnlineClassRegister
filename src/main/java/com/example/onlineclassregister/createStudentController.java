@@ -67,6 +67,7 @@ public class createStudentController {
                 password = md5Helper.getMd5(password);
 
                 String SQL = "INSERT INTO users (mail, role, password) VALUES (?, ?, ?)";
+                String SQL11 = "Insert into users() VALUES();";
 
 
                 try{
@@ -85,6 +86,9 @@ public class createStudentController {
                          id = rs.getInt(1);
                     }
                     rs.close();
+
+                    Statement stmt11 = conn.createStatement();
+                    stmt11.executeUpdate(SQL11);
 
                     if(id!=-1)
                     {

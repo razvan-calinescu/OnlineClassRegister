@@ -184,19 +184,19 @@ public class activateStudentController {
             throw new RuntimeException("No class chosen");
         }
 
-        String updateStmt3="INSERT INTO users(fName, lName, role, mail, phone, password) VALUES (";
+        String updateStmt3="UPDATE users SET ";
         boolean stmt3=false;
 
         if(!parentFName.getText().isEmpty()){
             stmt3=true;
-            updateStmt3+="'"+parentFName.getText()+"', ";
+            updateStmt3+="fName='"+parentFName.getText()+"', ";
         }else {
             parentFName.setStyle("-fx-border-color: red;");
             throw new RuntimeException("Empty parent first name");
         }
         if(!parentLName.getText().isEmpty()){
             stmt3=true;
-            updateStmt3+="'"+parentLName.getText()+"', 3, ";
+            updateStmt3+="lName='"+parentLName.getText()+"', role=3, ";
         }else {
             parentLName.setStyle("-fx-border-color: red;");
             throw new RuntimeException("Empty parent last name");
@@ -204,7 +204,7 @@ public class activateStudentController {
 
         if(!parentEmail.getText().isEmpty() && emailOk(parentEmail.getText())){
             stmt3=true;
-            updateStmt3+="'"+parentEmail.getText()+"', ";
+            updateStmt3+="mail='"+parentEmail.getText()+"', ";
         }else {
             parentEmail.setStyle("-fx-border-color: red;");
             throw new RuntimeException("Empty parent email");
@@ -215,7 +215,8 @@ public class activateStudentController {
             md5 md5Helper = new md5();
             String pass=parentEmail.getText().substring(0,5);
             pass=md5Helper.getMd5(pass);
-            updateStmt3+="'"+parentPhone.getText()+"', '"+pass+"')";
+            int pId = loggedUser.userId+1;
+            updateStmt3+="phone='"+parentPhone.getText()+"', password='"+pass+"' WHERE id="+pId+";";
         }else {
             parentPhone.setStyle("-fx-border-color: red;");
             throw new RuntimeException("Empty parent phone");
@@ -224,24 +225,27 @@ public class activateStudentController {
 
 
         String stmtActivate = "UPDATE users SET isActive = 1 WHERE id=" + loggedUser.userId+"; ";
-        String stmtParentId = "Select parent1Id from users where LOWER(mail)=LOWER("+ parentEmail.getText()+ ");";
+     //   String stmtParentId = "Select parent1Id from users where LOWER(mail)=LOWER("+ parentEmail.getText()+ ");";
 
 
         try{
             Statement stmt=conn.createStatement();
             stmt.executeUpdate(updateStmt2);
+            System.out.println("SQL "+updateStmt3);
             stmt.executeUpdate(updateStmt3);
             stmt.executeUpdate(stmtActivate);
-            ResultSet rs = stmt.executeQuery(stmtParentId);
+          //  ResultSet rs = stmt.executeQuery(stmtParentId);
             int parentId=-1;
 
             /// Add parent id to students table
-            while(rs.next())
-            {
-                parentId=rs.getInt("parent1Id");
-            }
+//            while(rs.next())
+//            {
+//                parentId=rs.getInt("parent1Id");
+//            }
 
-            String stmt4="UPDATE student Set parent1Id="+parentId+" WHERE userId="+loggedUser.userId+";";
+            String stmt4="UPDATE student Set parent1Id="+loggedUser.userId+1+" WHERE userId="+loggedUser.userId+";";
+            Statement stmtParent= conn.createStatement();
+            stmtParent.executeUpdate(stmt4);
 
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("registerStudent.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 850, 700);

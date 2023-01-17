@@ -1,6 +1,6 @@
 package com.example.onlineclassregister;
 
-public interface isGrade {
+public interface Gradable {
 
     void setValue(double val);
     double getValue();

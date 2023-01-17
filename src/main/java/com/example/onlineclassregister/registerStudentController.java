@@ -43,9 +43,15 @@ public class registerStudentController {
     @FXML
     private Text average;
 
+    Student activeStudent = null;
+
     @FXML
     public void initialize(){
 
+        subjectList.setFixedCellSize(30);
+        buttonList.setFixedCellSize(30);
+        gradesList.setFixedCellSize(30);
+        attendanceList.setFixedCellSize(30);
 
         average.setText("");
 
@@ -61,41 +67,32 @@ public class registerStudentController {
 
 
         Map<Integer, String> subjectNames = Subject.initSubject();
-        List<Integer> attendedCourses = new ArrayList<>();
+        List<regEntry> regEntries = new ArrayList<>();
+        List<Student> students = Student.getStudents();
 
 
-        String SQL= "Select * from student where userId="+loggedUser.userId+";";
 
-        dbConnection dbConn = new dbConnection();
-        Connection conn = dbConn.getConnection();
+        for(Student s: students)
+            if(s.userId==loggedUser.userId)
+                activeStudent=s;
 
-        try{
-            Statement stmt= conn.createStatement();
-            ResultSet res = stmt.executeQuery(SQL);
+        if(activeStudent!=null)
+        regEntries = activeStudent.regEntries;
 
-            while(res.next())
-            {
-                int coursesCount = res.getInt("coursesCount");
-                int colIndex=res.findColumn("coursesCount");
-                for(int i=1; i<=coursesCount; i++)
-                    attendedCourses.add(res.getInt(colIndex+i));
-            }
 
-            conn.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if(!attendedCourses.isEmpty()) {
-            for (Integer courseId : attendedCourses)
+        if(!regEntries.isEmpty()) {
+            for (Teacher t: Teacher.getTeachers())
+            if(t.ClassesId.contains(activeStudent.classId))
             {
 
-                subjectList.getItems().add(subjectNames.get(courseId));
+                subjectList.getItems().add(subjectNames.get(t.subjectId));
 
             Button b = new Button();
             b.setText("Choose");
-            b.setUserData(courseId);
+            b.setUserData(t.subjectId);
+                b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                b.setPrefWidth(84);
+                b.setPrefHeight(23);
 
             b.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -117,6 +114,9 @@ public class registerStudentController {
 
     private void editButtonClick(Button b) {
 
+        gradesList.getItems().clear();
+        attendanceList.getItems().clear();
+
         double avg=0;
         double avgCount=0;
 
@@ -124,49 +124,33 @@ public class registerStudentController {
 
         int courseId = (int) b.getUserData();
 
-        String SQL = "SELECT * from register"+loggedUser.userId+";";
+        List<regEntry> regEntries = activeStudent.regEntries;
 
-        dbConnection dbconn = new dbConnection();
-        Connection conn = dbconn.getConnection();
+        for(regEntry r: regEntries)
+            if(r.value!=0 && r.subjectId==courseId) {
 
-        try{
-            Statement stmt = conn.createStatement();
-            ResultSet res = stmt.executeQuery(SQL);
+                String subject= subjectNames.get(r.subjectId);
+                double grade = r.getValue();
+                avg+=grade;
+                avgCount++;
+                String date = String.valueOf(r.date);
+                gradesList.getItems().add(subject+": "+grade+" / "+date);
 
-            while(res.next()){
-                if(res.getInt("isGrade")==1){
-
-                    String subject= subjectNames.get(res.getInt("subjectId"));
-                    double grade = res.getDouble("gradeValue");
-                    avg+=grade;
-                    avgCount++;
-                    String date = String.valueOf(res.getDate("date"));
-                    gradesList.getItems().add(subject+": "+grade+" / "+date);
-
-                }
-                else if(res.getInt("isAbsence")==1)
+            }
+        else if(r.value==0 && r.subjectId==courseId)
                 {
-                    String subject= subjectNames.get(res.getInt("subjectId"));
-                    int motivated = res.getInt("motivated");
-                    String date = String.valueOf(res.getDate("date"));
+                    String subject= subjectNames.get(r.subjectId);
+                    boolean motivated = r.getMotivated();
+                    String date = String.valueOf(r.date);
 
-                    if(motivated==0)
+                    if(motivated==false)
                         attendanceList.getItems().add(subject+": Absence / "+date);
                     else
                         attendanceList.getItems().add(subject+": Absence / "+date+" - Motivated ");
-
-                }
-
-
-
             }
 
-            conn.close();
             average.setText("Current average: "+avg/avgCount);
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

@@ -77,14 +77,18 @@ public class editStudentController {
 
         String SQL= "Delete from users where id= "+ student.userId+";";
         String SQL2= "DROP table register"+student.userId+";";
+        String SQL3= "Delete from users where userId= "+ student.parent1Id+";";
 
         dbConnection dbConn =new dbConnection();
         Connection conn = dbConn.getConnection();
 
         try{
             Statement stmt = conn.createStatement();
+            stmt.executeUpdate(SQL3);
             stmt.executeUpdate(SQL);
             stmt.executeUpdate(SQL2);
+
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

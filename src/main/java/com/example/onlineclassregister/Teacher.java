@@ -11,9 +11,31 @@ import java.util.*;
 
 public class Teacher extends SchoolPerson implements hasAverage{
 
-    Button edit;
+    public Button getEditBtn() {
+        return editBtn;
+    }
 
-    String fullName, subjectName, classTeacherName; /// TO DO Average
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public String getClassTeacherName() {
+        return classTeacherName;
+    }
+
+    public String getEmail2() {
+        return email2;
+    }
+
+
+    Button editBtn;
+
+
+    String fullName, subjectName, classTeacherName, email2; /// TO DO Average
     Double average;
     int subjectId, weeklyClasses, classTeacherId, teacherId, classesCount;
     List<Integer> ClassesId = new ArrayList<>();

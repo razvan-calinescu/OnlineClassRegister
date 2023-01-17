@@ -21,6 +21,26 @@ public class SchoolPerson {
 
     Date birthDate;
 
+    public int getRole() {
+        return role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
     public SchoolPerson(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, boolean isAdmin, int isActive) {
         this.fName = fName;
         this.lName = lName;

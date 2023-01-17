@@ -92,11 +92,13 @@ public class Subject implements hasAverage {
         List<Student> students= Student.getStudents();
 
         double avg=0;
+        int k=0;
 
         for(Class c: classes) {
             double cAvg=0;
             int avgCount=0;
             if (c.subjectsTaught.contains(this.id)) {
+                System.out.println();
                 double avg1=0;
                 int avgCount1=0;
                 for (Student s : students)
@@ -109,12 +111,12 @@ public class Subject implements hasAverage {
                 cAvg+=(avg1/avgCount1);
                 avgCount++;
             }
-
-
+            avg+=cAvg/avgCount;
+            k++;
         }
 
         if(avg!=0)
-        return avg;
+            return avg/k;
         else
             return 0.0;
     }

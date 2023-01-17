@@ -1,11 +1,41 @@
 package com.example.onlineclassregister;
 
+import javafx.scene.control.Button;
+
 import java.util.Date;
 
 public class regEntry implements Gradable, motivateable {
 
+    public String subject, motivateStatus;
     double value=0;
     boolean motivated=false;
+
+    Button motivate;
+
+    public Button getMotivate() {
+        return motivate;
+    }
+
+    public String getMotivateStatus() {
+        return motivateStatus;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public boolean isMotivated() {
+        return motivated;
+    }
+
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
     int subjectId;
     Date date;
 

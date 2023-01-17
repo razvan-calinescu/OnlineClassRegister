@@ -72,6 +72,15 @@ public class registerController {
     @FXML
     private Button homeButton;
 
+    @FXML
+    private Button motivate;
+
+
+
+    private int classId1;
+
+
+
     private Student currentStudent;
     private Teacher currentTeacher;
     
@@ -215,6 +224,7 @@ public class registerController {
 
     public void getClassById() throws SQLException {
 
+        motivate.setVisible(false);
         int id = -1;
         studentsList.getItems().clear();
         Map<Integer, String> classes= Class.getAllClassesMap();
@@ -240,6 +250,13 @@ public class registerController {
         }
 
 
+        List<Teacher> teachers = Teacher.getTeachers();
+        for(Teacher t: teachers)
+            if(t.userId==loggedUser.userId && t.classTeacherId == id)
+            {
+                classId1 = id;
+                motivate.setVisible(true);
+            }
     }
 
     public void getStudentById() throws SQLException{
@@ -395,6 +412,8 @@ public class registerController {
 
         Teacher teacher = null;
 
+        motivate.setVisible(false);
+
         studentAlert.setFill(Paint.valueOf("White"));
         studentAlert1.setFill(Paint.valueOf("White"));
 
@@ -435,6 +454,21 @@ public class registerController {
 
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
+
+    }
+
+    public void motivateClick(ActionEvent actionEvent) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("attendance.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 850, 700);
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(scene);
+
+        attendanceController act= fxmlLoader.getController();
+        act.setId(classId1);
+        act.initialize(classId1);
+        stage.showAndWait();
 
     }
 }

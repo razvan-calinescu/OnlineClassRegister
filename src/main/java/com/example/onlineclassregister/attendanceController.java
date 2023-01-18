@@ -79,7 +79,7 @@ public class attendanceController {
 
                 r.motivate = new Button();
                 r.motivate.setUserData(r);
-                r.motivate.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                r.motivate.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 r.motivate.setPrefWidth(84);
                 r.motivate.setPrefHeight(23);
 
@@ -152,7 +152,7 @@ public class attendanceController {
 
             r.motivate = new Button();
             r.motivate.setUserData(r);
-            r.motivate.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+            r.motivate.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
             r.motivate.setPrefWidth(84);
             r.motivate.setPrefHeight(23);
 

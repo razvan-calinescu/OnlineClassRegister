@@ -108,7 +108,7 @@ public class manageStudentsController {
                     Button b = new Button();
                     b.setText("Edit");
                     b.setUserData(s);
-                    b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                    b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                     b.setPrefWidth(54);
                     b.setPrefHeight(23);
                     b.setOnAction(new EventHandler<ActionEvent>() {
@@ -188,7 +188,7 @@ public class manageStudentsController {
                 Button b = new Button();
                 b.setText("Edit");
                 b.setUserData(s);
-                b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 b.setPrefWidth(54);
                 b.setPrefHeight(23);
                 b.setOnAction(new EventHandler<ActionEvent>() {
@@ -288,7 +288,7 @@ public class manageStudentsController {
                 Button bt = new Button();
                 bt.setText("Edit");
                 bt.setUserData(st);
-                bt.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                bt.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 bt.setPrefWidth(54);
                 bt.setPrefHeight(23);
                 bt.setOnAction(new EventHandler<ActionEvent>() {
@@ -421,7 +421,7 @@ public class manageStudentsController {
                 Button bt = new Button();
                 bt.setText("Edit");
                 bt.setUserData(st);
-                bt.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                bt.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 bt.setPrefWidth(54);
                 bt.setPrefHeight(23);
                 bt.setOnAction(new EventHandler<ActionEvent>() {

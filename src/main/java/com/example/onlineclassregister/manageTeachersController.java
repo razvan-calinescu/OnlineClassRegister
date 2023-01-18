@@ -77,7 +77,7 @@ public class manageTeachersController {
             t.editBtn = new Button();
             t.editBtn.setText("Edit");
             t.editBtn.setUserData(t);
-            t.editBtn.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+            t.editBtn.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
             t.editBtn.setPrefWidth(64);
             t.editBtn.setPrefHeight(23);
             t.editBtn.setOnAction(new EventHandler<ActionEvent>() {

@@ -67,7 +67,7 @@ public class registerParentController {
                 b.setText("Choose");
                 b.setUserData(s);
 
-                b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 b.setPrefWidth(64);
                 b.setPrefHeight(23);
 
@@ -119,7 +119,7 @@ public class registerParentController {
                 Button bSubject = new Button();
                 bSubject.setText("Choose");
                 bSubject.setUserData(re.subjectId);
-                bSubject.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                bSubject.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 bSubject.setPrefWidth(54);
                 bSubject.setPrefHeight(23);
 

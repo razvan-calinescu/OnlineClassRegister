@@ -89,7 +89,7 @@ public class manageSubjectsController {
                     Button b = new Button();
                     b.setText("Edit");
                     b.setUserData(s);
-                    b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                    b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                     b.setPrefWidth(44);
                     b.setPrefHeight(23);
                     b.setOnAction(new EventHandler<ActionEvent>() {
@@ -159,7 +159,7 @@ public class manageSubjectsController {
                 Button b = new Button();
                 b.setText("Edit");
                 b.setUserData(s);
-                b.setStyle("-fx-background-color: #66bbc4; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
                 b.setPrefWidth(44);
                 b.setPrefHeight(23);
                 b.setOnAction(new EventHandler<ActionEvent>() {

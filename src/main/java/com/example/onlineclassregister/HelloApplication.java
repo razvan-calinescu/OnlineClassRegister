@@ -10,14 +10,14 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static com.example.onlineclassregister.Student.getStudents;
 import static com.example.onlineclassregister.Teacher.getTeachers;
@@ -36,12 +36,20 @@ public class HelloApplication extends Application {
     }
     
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
 
+
+
+
+        Properties properties1 = new Properties();
+        InputStream input = new FileInputStream("src/main/java/com/example/onlineclassregister/projectProperties.properties");
+
+        properties1.load(input);
+        properties.dbConnLink= properties1.getProperty("db.url");
+        properties.mainColor = properties1.getProperty("background.color");
 
         dbConnection dbConn = new dbConnection();
         Connection conn = dbConn.getConnection();
-
 
         launch();
 

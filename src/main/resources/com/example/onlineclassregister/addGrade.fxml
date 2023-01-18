@@ -11,7 +11,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.onlineclassregister.addGradeController">
    <top>
-      <Pane prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: #66bbc4;" BorderPane.alignment="CENTER">
+      <Pane prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: background.color;" BorderPane.alignment="CENTER">
          <children>
             <Circle fill="WHITE" layoutX="56.0" layoutY="41.0" radius="33.0" stroke="WHITE" strokeType="INSIDE" />
             <Circle fill="#66bbc4" layoutX="66.0" layoutY="41.0" radius="33.0" stroke="#66bbc4" strokeType="INSIDE" />

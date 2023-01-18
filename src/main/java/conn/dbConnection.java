@@ -1,5 +1,7 @@
 package conn;
 
+import com.example.onlineclassregister.properties;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -12,7 +14,9 @@ public class dbConnection {
         String databaseName="classreg";
         String databaseUser="root";
         String databasePassword="";
-        String url="jdbc:mysql://127.0.0.1/" +databaseName;
+      // String url="jdbc:mysql://127.0.0.1/" +databaseName;
+        String url=properties.dbConnLink +databaseName;
+
 
         try{
 

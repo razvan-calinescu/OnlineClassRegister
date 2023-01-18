@@ -169,7 +169,7 @@ public class createStudentController {
 
                 for (CSVRecord record : records) {
                     String emailSQL = record.get(0);
-                    String password = emailSQL.substring(0, 5);
+                    String password = emailSQL.substring(0, 3);
                     password = md5Helper.getMd5(password);
 
                     if (!emailSQL.isBlank() && !emailExists(emailSQL)) {
@@ -199,8 +199,11 @@ public class createStudentController {
                             Statement stmt11 = conn.createStatement();
                             stmt11.executeUpdate(SQL11);
 
+
                             if(id!=-1)
                             {
+
+
                                 String SQL1="Create Table register"+id+" like grades";
                                 Statement stmt1=conn.createStatement();
                                 stmt1.executeUpdate(SQL1);

@@ -78,6 +78,7 @@ public class registerController {
 
 
     private int classId1;
+    private Teacher loggedTeacher;
 
 
 
@@ -308,12 +309,12 @@ public class registerController {
                         rowGrades = "";
                         rowAbsence = "";
 
-                        if (res.getInt("isGrade") == 1) {
+                        if (res.getInt("isGrade" ) == 1 && res.getInt("teacherId")==loggedUser.userId) {
                             rowGrades += subjectIdName.get(res.getInt("subjectId")) + ": " + res.getInt("gradeValue") + " / " + res.getDate("date");
                             gradesList.getItems().add(rowGrades);
                         }
 
-                        if (res.getInt("isAbsence") == 1) {
+                        if (res.getInt("isAbsence") == 1 && res.getInt("teacherId")==loggedUser.userId) {
                             rowAbsence += subjectIdName.get(res.getInt("subjectId")) + ": Absent" + " / " + res.getDate("date");
                             if (res.getInt("motivated") == 1)
                                 rowAbsence += " - Motivated";
@@ -361,7 +362,7 @@ public class registerController {
 
                 while(res.next())
                 {
-                    if(res.getInt("isAbsence")==1)
+                    if(res.getInt("isAbsence")==1 && res.getInt("teacherId")==loggedUser.userId)
                     {
                         String date = String.valueOf(res.getDate("date"));
                         int motivated = res.getInt("motivated");
@@ -373,7 +374,7 @@ public class registerController {
                             absenceList.getItems().add(courseNames.get(courseId)+": "+date+" - Motivated");
 
                     }
-                    else if(res.getInt("isGrade")==1){
+                    else if(res.getInt("isGrade")==1 && res.getInt("teacherId")==loggedUser.userId){
                         double grade = res.getDouble("gradeValue");
                         String date = String.valueOf(res.getDate("date"));
                         int courseId = res.getInt("subjectId");
@@ -412,6 +413,7 @@ public class registerController {
 
         Teacher teacher = null;
 
+
         motivate.setVisible(false);
 
         studentAlert.setFill(Paint.valueOf("White"));
@@ -430,7 +432,6 @@ public class registerController {
                 teacher=t;
                 break;
             }
-
 
         dateBar.setText("Currently logged-in: "+ teacher.mail);
 

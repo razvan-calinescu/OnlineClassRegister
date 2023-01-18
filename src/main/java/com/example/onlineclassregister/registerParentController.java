@@ -120,7 +120,7 @@ public class registerParentController {
                 bSubject.setText("Choose");
                 bSubject.setUserData(re.subjectId);
                 bSubject.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                bSubject.setPrefWidth(54);
+                bSubject.setPrefWidth(64);
                 bSubject.setPrefHeight(23);
 
                 bSubject.setOnAction(new EventHandler<ActionEvent>() {

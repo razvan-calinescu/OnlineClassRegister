@@ -146,13 +146,13 @@ public class Teacher extends SchoolPerson implements hasAverage{
                         }
 
 
-                mediaClasei+=ms;
+                mediaClasei+=ms/ks;
                 kClasa++;
                 }
 
             }
 
-            media+=mediaClasei;
+            media+=mediaClasei/kClasa;
             k++;
         }
 

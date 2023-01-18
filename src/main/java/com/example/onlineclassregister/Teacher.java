@@ -43,6 +43,8 @@ public class Teacher extends SchoolPerson implements hasAverage{
 
     Map<Integer, String> classesName = new HashMap<>();
 
+
+
     public Teacher(String fName, String lName, int id, int role, String mail, String phone, Date birthDate, int subjectId, int weeklyClasses, int classTeacherId, int teacherId, int classesCount, List<Integer> classes, Map<Integer, String> classesNames, int isActive) {
         super(fName, lName, id, role, mail, phone, birthDate, false, isActive);
         this.subjectId = subjectId;
@@ -158,5 +160,33 @@ public class Teacher extends SchoolPerson implements hasAverage{
             return media/k;
         else
             return 0;
+    }
+
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public int getWeeklyClasses() {
+        return weeklyClasses;
+    }
+
+    public int getClassTeacherId() {
+        return classTeacherId;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public int getClassesCount() {
+        return classesCount;
+    }
+
+    public List<Integer> getClassesId() {
+        return ClassesId;
+    }
+
+    public Map<Integer, String> getClassesName() {
+        return classesName;
     }
 }

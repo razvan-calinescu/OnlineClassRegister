@@ -132,4 +132,12 @@ public class Subject implements hasAverage {
             return 0;
 
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

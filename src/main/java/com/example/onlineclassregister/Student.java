@@ -159,32 +159,96 @@ public class Student extends SchoolPerson implements hasAverage{
             return 0;
     }
 
-//    public static Map<String, java.sql.Date> getGrades(int studentId)
-//    {
-//            Map<String, java.sql.Date> aux = new HashMap<>();
-//
-//            dbConnection dbConnection = new dbConnection();
-//            Connection conn = dbConnection.getConnection();
-//
-//            String SQL="Select * from register"+studentId;
-//
-//            try{
-//
-//                Statement stmt = conn.createStatement();
-//                ResultSet res= stmt.executeQuery(SQL);
-//
-////                while(res.next())
-////                {
-////                    if(res.getInt("isGrade")==1)
-////                    {
-////
-////                    }
-////                }
-//
-//            }catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//    }
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public int getTotalMissingAttendance() {
+        return totalMissingAttendance;
+    }
+
+    public void setTotalMissingAttendance(int totalMissingAttendance) {
+        this.totalMissingAttendance = totalMissingAttendance;
+    }
+
+    public int getTotalMotivated() {
+        return totalMotivated;
+    }
+
+    public void setTotalMotivated(int totalMotivated) {
+        this.totalMotivated = totalMotivated;
+    }
+
+    @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getParent1Id() {
+        return parent1Id;
+    }
+
+    public void setParent1Id(int parent1Id) {
+        this.parent1Id = parent1Id;
+    }
+
+    public int getParent2Id() {
+        return parent2Id;
+    }
+
+    public void setParent2Id(int parent2Id) {
+        this.parent2Id = parent2Id;
+    }
+
+    public int getCoursesCount() {
+        return coursesCount;
+    }
+
+    public void setCoursesCount(int coursesCount) {
+        this.coursesCount = coursesCount;
+    }
+
+    public int getStudId() {
+        return studId;
+    }
+
+    public void setStudId(int studId) {
+        this.studId = studId;
+    }
+
+    public void setAverage(double average) {
+        this.average = average;
+    }
+
+    public List<Integer> getCoursesAttended() {
+        return coursesAttended;
+    }
+
+    public void setCoursesAttended(List<Integer> coursesAttended) {
+        this.coursesAttended = coursesAttended;
+    }
+
+    public List<regEntry> getRegEntries() {
+        return regEntries;
+    }
+
+    public void setRegEntries(List<regEntry> regEntries) {
+        this.regEntries = regEntries;
+    }
+
+    public Map<Integer, Double> getAverages() {
+        return averages;
+    }
+
+    public void setAverages(Map<Integer, Double> averages) {
+        this.averages = averages;
+    }
 }

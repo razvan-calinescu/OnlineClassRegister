@@ -14,9 +14,14 @@ import java.util.Map;
 
 public class Class implements  hasAverage{
 
-    int id, classTeacherId, studentsCount, year, subjectsCount;
-    String name, room;
-    List<Integer> subjectsTaught= new ArrayList<>();
+    public int id;
+    public int classTeacherId;
+    public int studentsCount;
+    public int year;
+    public int subjectsCount;
+    public String name;
+    public String room;
+    public List<Integer> subjectsTaught= new ArrayList<>();
 
     public static Map<Integer, String> allClassesName = new HashMap<>();
 

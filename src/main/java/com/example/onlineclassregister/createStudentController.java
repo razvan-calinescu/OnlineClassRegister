@@ -83,7 +83,7 @@ public class createStudentController {
                     ResultSet rs = stmt.getGeneratedKeys();
                     int id=-1;
                     if (rs.next()) {
-                         id = rs.getInt(1);
+                        id = rs.getInt(1);
                     }
                     rs.close();
 
@@ -96,10 +96,10 @@ public class createStudentController {
                         Statement stmt1=conn.createStatement();
                         stmt1.executeUpdate(SQL1);
 
-                            String SQL2 = "INSERT INTO student (userId) VALUES (?)";
-                            PreparedStatement stmt2= conn.prepareStatement(SQL2);
-                            stmt2.setInt(1, id);
-                            stmt2.executeUpdate();
+                        String SQL2 = "INSERT INTO student (userId) VALUES (?)";
+                        PreparedStatement stmt2= conn.prepareStatement(SQL2);
+                        stmt2.setInt(1, id);
+                        stmt2.executeUpdate();
 
 
                     }
@@ -114,12 +114,12 @@ public class createStudentController {
             }
         }
         else
-            {
-                email.clear();
-                email.setPromptText("Please provide an email before clicking 'add'! ");
+        {
+            email.clear();
+            email.setPromptText("Please provide an email before clicking 'add'! ");
 
-            }
         }
+    }
 
     private boolean emailExists(String text) {
 
@@ -134,6 +134,7 @@ public class createStudentController {
 
             while(res.next())
             {
+                if(res.getString("mail")!=null)
                 if(res.getString("mail").equals(text))
                     return true;
             }
@@ -173,13 +174,15 @@ public class createStudentController {
 
                     if (!emailSQL.isBlank() && !emailExists(emailSQL)) {
 
+                      //  String SQL = "INSERT INTO users (mail, role, password) VALUES (?, ?, ?)";
+
                         String SQL = "INSERT INTO users (mail, role, password) VALUES (?, ?, ?)";
+                        String SQL11 = "Insert into users() VALUES();";
 
-
-                        try {
+                        try{
 
                             dbConnection dbConn = new dbConnection();
-                            Connection conn = dbConn.getConnection();
+                            Connection conn =dbConn.getConnection();
                             PreparedStatement stmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                             stmt.setString(1, emailSQL);
                             stmt.setInt(2, 2); //2= student
@@ -187,24 +190,29 @@ public class createStudentController {
                             stmt.executeUpdate();
 
                             ResultSet rs = stmt.getGeneratedKeys();
-                            int id = -1;
+                            int id=-1;
                             if (rs.next()) {
                                 id = rs.getInt(1);
                             }
                             rs.close();
 
-                            if (id != -1) {
-                                String SQL1 = "Create Table register" + id + " like grades";
-                                Statement stmt1 = conn.createStatement();
+                            Statement stmt11 = conn.createStatement();
+                            stmt11.executeUpdate(SQL11);
+
+                            if(id!=-1)
+                            {
+                                String SQL1="Create Table register"+id+" like grades";
+                                Statement stmt1=conn.createStatement();
                                 stmt1.executeUpdate(SQL1);
 
                                 String SQL2 = "INSERT INTO student (userId) VALUES (?)";
-                                PreparedStatement stmt2 = conn.prepareStatement(SQL2);
+                                PreparedStatement stmt2= conn.prepareStatement(SQL2);
                                 stmt2.setInt(1, id);
                                 stmt2.executeUpdate();
 
 
                             }
+
 
                             Stage stage = (Stage) cancelButton.getScene().getWindow();
                             stage.close();
@@ -222,8 +230,7 @@ public class createStudentController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-}
         }
     }
-
+}
 

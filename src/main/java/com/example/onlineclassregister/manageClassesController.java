@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,27 +20,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class manageClassesController {
 
 
     @FXML
-    private ListView<Integer> id;
-
-    @FXML
-    private ListView<String> name;
-
-    @FXML
-    private ListView<String> classTeacher;
-
-    @FXML
-    private ListView<String> room;
-
-    @FXML
-    private ListView<Integer> studentsCount;
-
-    @FXML
-    private ListView<Button> edit;
+    private TableView<Class> classesTable;
 
 
     @FXML
@@ -61,130 +48,53 @@ public class manageClassesController {
     private TextField filterField;
 
 
-    private final ObservableList<Class> dataList = FXCollections.observableArrayList();
-
-    private void filterClasses(String filter) throws SQLException {
-        List<Class> classList = Class.getAllClassesList();
-        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
-
-        // Create new lists to hold filtered data
-        ObservableList<Integer> ids = FXCollections.observableArrayList();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        ObservableList<String> classTeachers = FXCollections.observableArrayList();
-        ObservableList<String> rooms = FXCollections.observableArrayList();
-        ObservableList<Integer> studentCounts = FXCollections.observableArrayList();
-        ObservableList<Button> edits = FXCollections.observableArrayList();
-
-        for (Class c : classList) {
-            if (c.name.toLowerCase().contains(filter.toLowerCase())) {
-                List<Teacher> teachers = Teacher.getTeachers();
-
-                ids.add(c.id);
-                names.add(c.name);
-
-                for (Teacher t : teachers) {
-                    if (t.userId == c.classTeacherId) {
-                        classTeachers.add(t.fName + " " + t.lName);
-                    }
-                }
-
-                //if no match found
-                if(classTeachers.size() != ids.size()){
-                    classTeachers.add("-");
-                }
-                rooms.add(c.room);
-                studentCounts.add(c.studentsCount);
-
-                if (c != null) {
-                    Button b = new Button();
-                    b.setText("Edit");
-                    b.setUserData(c);
-                    b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                    b.setPrefWidth(44);
-                    b.setPrefHeight(23);
-                    b.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            try {
-                                editButtonClick(b);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                    edits.add(b);
-                }
-            }
-        }
-
-        // Set the filtered data to the ListViews
-        Platform.runLater(() -> {
-            id.setItems(ids);
-            name.setItems(names);
-            classTeacher.setItems(classTeachers);
-            room.setItems(rooms);
-            studentsCount.setItems(studentCounts);
-            edit.setItems(edits);
-        });
-
-    }
+    private ObservableList<Class> classes = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() throws SQLException {
 
-        List<Class> classList = Class.getAllClassesList();
-        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
 
-        id.setFixedCellSize(30);
-        name.setFixedCellSize(30);
-        classTeacher.setFixedCellSize(30);
-        studentsCount.setFixedCellSize(30);
-        room.setFixedCellSize(30);
-        edit.setFixedCellSize(30);
+        filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+            Thread thread = new Thread(() -> {
+                // Use the newValue from the filterField to filter the data in the table
+                List<Class> filteredTeachers = classes.stream()
+                        .filter(class1 -> class1.name.contains(newValue))
+                        .collect(Collectors.toList());
 
-        ObservableList<Integer> ids = FXCollections.observableArrayList();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        ObservableList<String> classTeachers = FXCollections.observableArrayList();
-        ObservableList<String> rooms = FXCollections.observableArrayList();
-        ObservableList<Integer> studentCounts = FXCollections.observableArrayList();
-        ObservableList<Button> edits = FXCollections.observableArrayList();
+                // Use Platform.runLater() to schedule the update on the JavaFX Application Thread
+                Platform.runLater(() -> {
+                    classesTable.setItems(FXCollections.observableArrayList(filteredTeachers));
+                });
+            });
+            thread.start();
+        });
 
-        for (Class c : classList) {
-            System.out.println(c.getAverage());
+        classes.clear();
 
-            List<Teacher> teachers = Teacher.getTeachers();
+        for (final Class s: Class.getAllClassesList()) {
+            Thread thread = new Thread(() -> {
 
-            ids.add(c.id);
-            names.add(c.name);
+                for(Teacher t: Teacher.getTeachers())
+                    if(t.userId==s.classTeacherId)
+                    {
+                        s.classTeacherName =  t.fName+ " "+ t.lName;
+                        break;
+                    }
 
-            boolean ok1=false;
+                s.average=s.getAverage();
 
-            for(Teacher t: teachers)
-                if(t.userId==c.classTeacherId){
-                    ok1=true;
-                    classTeachers.add(t.fName+" "+t.lName);
-                }
 
-            if(!ok1)
-                classTeachers.add("-");
-
-            rooms.add(c.room);
-            studentCounts.add(c.studentsCount);
-
-            if(c!=null) {
-                Button b = new Button();
-                b.setText("Edit");
-                b.setUserData(c);
-                b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                b.setPrefWidth(44);
-                b.setPrefHeight(23);
-                b.setOnAction(new EventHandler<ActionEvent>() {
+                s.edit = new Button();
+                s.edit.setText("Edit");
+                s.edit.setUserData(s);
+                s.edit.setStyle("-fx-background-color: " + properties.mainColor + "; -fx-border-radius: 25px; -fx-background-radius: 25px");
+                s.edit.setPrefWidth(64);
+                s.edit.setPrefHeight(23);
+                s.edit.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         try {
-                            editButtonClick(b);
+                            editButtonClick(s.edit);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         } catch (SQLException e) {
@@ -192,28 +102,14 @@ public class manageClassesController {
                         }
                     }
                 });
-                edits.add(b);
-            }
-        }
-
-        id.setItems(ids);
-        name.setItems(names);
-        classTeacher.setItems(classTeachers);
-        studentsCount.setItems(studentCounts);
-        room.setItems(rooms);
-        edit.setItems(edits);
-
-        filterField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Create a new thread to perform the filtering
-            Thread thread = new Thread(() -> {
-                try {
-                    filterClasses(newValue);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                Platform.runLater(() -> {
+                    classes.add(s);
+                });
             });
             thread.start();
-        });
+        }
+
+        classesTable.setItems(classes);
     }
 
     private void editButtonClick(Button b) throws IOException, SQLException {

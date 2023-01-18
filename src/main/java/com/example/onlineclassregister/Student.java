@@ -1,6 +1,7 @@
 package com.example.onlineclassregister;
 
 import conn.dbConnection;
+import javafx.scene.control.Button;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,6 +13,34 @@ public class Student extends SchoolPerson implements hasAverage{
 
     public int  classId, totalMissingAttendance, totalMotivated, userId, parent1Id, parent2Id, coursesCount, studId;
     public double average;
+    String name, className;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public Button getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Button edit) {
+        this.edit = edit;
+    }
+
+    Button edit;
+
     public List<Integer> coursesAttended = new ArrayList<>();
     public List<regEntry> regEntries = new ArrayList<>();
 

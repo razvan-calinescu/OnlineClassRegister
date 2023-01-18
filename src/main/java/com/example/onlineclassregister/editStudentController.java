@@ -75,9 +75,11 @@ public class editStudentController {
     @FXML
     public void deleteConfirmButton() {
 
+
+
         String SQL= "Delete from users where id= "+ student.userId+";";
         String SQL2= "DROP table register"+student.userId+";";
-        String SQL3= "Delete from users where userId= "+ student.parent1Id+";";
+        String SQL3= "Delete from users where id= "+ student.parent1Id+";";
 
         dbConnection dbConn =new dbConnection();
         Connection conn = dbConn.getConnection();
@@ -108,8 +110,6 @@ public class editStudentController {
         title.setText("You'll now be editing "+s.fName+ " "+ s.lName);
         deleteConfirmButton.setDisable(true);
         deleteConfirmButton.setOpacity(0);
-
-
 
         for(String classNames: classes.values())
             className.getItems().add(classNames);

@@ -1,6 +1,7 @@
 package com.example.onlineclassregister;
 
 import conn.dbConnection;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
 import java.sql.Connection;
@@ -21,7 +22,13 @@ public class Class implements  hasAverage{
     public int subjectsCount;
     public String name;
     public String room;
+
+    public double average;
+
+    String classTeacherName;
     public List<Integer> subjectsTaught= new ArrayList<>();
+
+    public Button edit;
 
     public static Map<Integer, String> allClassesName = new HashMap<>();
 
@@ -118,5 +125,49 @@ public class Class implements  hasAverage{
             return m/k;
         else
             return 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getClassTeacherId() {
+        return classTeacherId;
+    }
+
+    public int getStudentsCount() {
+        return studentsCount;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getSubjectsCount() {
+        return subjectsCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public List<Integer> getSubjectsTaught() {
+        return subjectsTaught;
+    }
+
+    public static Map<Integer, String> getAllClassesName() {
+        return allClassesName;
+    }
+
+    public String getClassTeacherName() {
+        return classTeacherName;
+    }
+
+    public Button getEdit() {
+        return edit;
     }
 }

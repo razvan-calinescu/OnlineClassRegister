@@ -22,34 +22,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class manageStudentsController {
 
     @FXML
-    private ListView<Integer> id;
-
-    @FXML
-    private ListView<String> name;
-
-    @FXML
-    private ListView<String> email;
-
-    @FXML
-    private ListView<String> parent;
-
-    @FXML
-    private ListView<String> className;
-
-    @FXML
-    private ListView<Button> edit;
-
-    @FXML
-    private ListView<Double> avg;
-
-    @FXML
     private Button exitButton;
 
+   @FXML
+   private TableView<Student> studentsTable;
     @FXML
     private Button homeButton;
 
@@ -65,165 +47,64 @@ public class manageStudentsController {
     @FXML
     private TextField filterField;
 
-
-    private final ObservableList<Student> dataList = FXCollections.observableArrayList();
-
-
-    private void filterStudents(String filter) throws SQLException {
-        List<Student> studentList = Student.getStudents();
-        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
-
-        // Create new lists to hold filtered data
-        ObservableList<Integer> ids = FXCollections.observableArrayList();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<Double> avgs = FXCollections.observableArrayList();
-        ObservableList<String> classNames = FXCollections.observableArrayList();
-        ObservableList<Button> edits = FXCollections.observableArrayList();
-
-        for (Student s : studentList) {
-            if (s.fName.toLowerCase().contains(filter.toLowerCase()) || s.lName.toLowerCase().contains(filter.toLowerCase()) || s.mail.toLowerCase().contains(filter.toLowerCase())) {
-                ids.add(s.userId);
-                if(s.fName==null)
-                    names.add("Account Inactive");
-                else
-                    names.add(s.fName + " " + s.lName);
-
-                if(s.mail==null)
-                    emails.add("Account Inactive");
-                else
-                    emails.add(s.mail);
-
-                if(s.classId==0)
-                    classNames.add(" - ");
-                else
-                    classNames.add(classNamesMap.get(s.classId));
-
-                if(s.getAverage()==0)
-                    avgs.add(0.0);
-                else
-                    avgs.add(s.getAverage());
-
-                if(s!=null) {
-                    Button b = new Button();
-                    b.setText("Edit");
-                    b.setUserData(s);
-                    b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                    b.setPrefWidth(54);
-                    b.setPrefHeight(23);
-                    b.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            try {
-                                editButtonClick(b);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                    edits.add(b);
-                }
-            }
-        }
-
-        // Set the filtered data to the ListViews
-        Platform.runLater(() -> {
-            id.setItems(ids);
-            name.setItems(names);
-            email.setItems(emails);
-            avg.setItems(avgs);
-            className.setItems(classNames);
-            edit.setItems(edits);
-        });
-    }
-
-
+    private ObservableList<Student> students = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() throws SQLException {
 
-        id.setFixedCellSize(30);
-        name.setFixedCellSize(30);
-        email.setFixedCellSize(30);
-        className.setFixedCellSize(30);
-        edit.setFixedCellSize(30);
 
-        List<Student> studentList = Student.getStudents();
-        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
+        Map<Integer, String> classNames= Class.getAllClassesMap();
+        Map<Integer, String> subjectNames= Subject.initSubject();
 
-        ObservableList<Integer> ids = FXCollections.observableArrayList();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<Double> avgs = FXCollections.observableArrayList();
-        ObservableList<String> classNames = FXCollections.observableArrayList();
-        ObservableList<Button> edits = FXCollections.observableArrayList();
-
-        for (Student s : studentList) {
-            ids.add(s.userId);
-            if(s.fName==null)
-                names.add("Account Inactive");
-            else
-                names.add(s.fName + " " + s.lName);
-
-            if(s.mail==null)
-                emails.add("Account Inactive");
-            else
-                emails.add(s.mail);
-
-            if(s.classId==0)
-                classNames.add(" - ");
-            else
-                classNames.add(classNamesMap.get(s.classId));
-
-
-            if(s.getAverage()==0)
-                avgs.add(0.0);
-            else
-                avgs.add(s.getAverage());
-
-
-            if(s!=null) {
-                Button b = new Button();
-                b.setText("Edit");
-                b.setUserData(s);
-                b.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                b.setPrefWidth(54);
-                b.setPrefHeight(23);
-                b.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        try {
-                            editButtonClick(b);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-                edits.add(b);
-            }
-        }
-
-        id.setItems(ids);
-        name.setItems(names);
-        email.setItems(emails);
-        avg.setItems(avgs);
-        className.setItems(classNames);
-        edit.setItems(edits);
         filterField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Create a new thread to perform the filtering
-            Thread filterThread = new Thread(() -> {
-                try {
-                    filterStudents(newValue);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+            Thread thread = new Thread(() -> {
+                // Use the newValue from the filterField to filter the data in the table
+                List<Student> filteredTeachers = students.stream()
+                        .filter(student -> student.getName().contains(newValue))
+                        .collect(Collectors.toList());
+
+                // Use Platform.runLater() to schedule the update on the JavaFX Application Thread
+                Platform.runLater(() -> {
+                    studentsTable.setItems(FXCollections.observableArrayList(filteredTeachers));
+                });
+            });
+            thread.start();
+        });
+
+        students.clear();
+
+        for(Student s: Student.getStudents())
+        {
+            s.setName(s.fName+" "+s.lName);
+            s.average = s.getAverage();
+            s.setClassName(classNames.get(s.classId));
+
+            s.edit = new Button();
+            s.edit.setText("Edit");
+            s.edit.setUserData(s);
+            s.edit.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
+            s.edit.setPrefWidth(74);
+            s.edit.setPrefHeight(23);
+            s.edit.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        editButtonClick(s.edit);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
-            filterThread.start();
-        });
+
+            students.add(s);
+        }
+
+        studentsTable.setItems(students);
+
+
+
     }
 
     private void editButtonClick(Button b) throws IOException, SQLException {
@@ -242,82 +123,13 @@ public class manageStudentsController {
 
         stage.showAndWait();
 
-        id.refresh();
-        name.refresh();
-        email.refresh();
-        avg.refresh();
-        className.refresh();
-        edit.refresh();
-
-        ObservableList<Integer> ids = FXCollections.observableArrayList();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<Double> avgs = FXCollections.observableArrayList();
-        ObservableList<String> classNames = FXCollections.observableArrayList();
-        ObservableList<Button> edits = FXCollections.observableArrayList();
-
-
-        List<Student> studentList = Student.getStudents();
-        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
-
-
-        for (Student st : studentList) {
-            ids.add(st.userId);
-            if(st.fName==null)
-                names.add("Account Inactive");
-            else
-                names.add(st.fName + " " + st.lName);
-
-            if(st.mail==null)
-                emails.add("Account Inactive");
-            else
-                emails.add(st.mail);
-
-            if(st.classId==0)
-                classNames.add(" - ");
-            else
-                classNames.add(classNamesMap.get(st.classId));
-
-            if(s.getAverage()==0)
-                avgs.add(0.0);
-            else
-                avgs.add(s.getAverage());
-
-
-            if(s!=null) {
-                Button bt = new Button();
-                bt.setText("Edit");
-                bt.setUserData(st);
-                bt.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                bt.setPrefWidth(54);
-                bt.setPrefHeight(23);
-                bt.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        try {
-                            editButtonClick(bt);
-                        } catch (IOException | SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-                edits.add(bt);
-            }
-
-
-            id.setItems(ids);
-            name.setItems(names);
-            email.setItems(emails);
-            avg.setItems(avgs);
-            className.setItems(classNames);
-            edit.setItems(edits);
-        }
+        initialize();
     }
 
     @FXML
     private void goHome()  {
 
-        Stage stageToClose = (Stage) exitButton.getScene().getWindow();
+        Stage stageToClose = (Stage) addStudent.getScene().getWindow();
         stageToClose.close();
 
         List<SchoolPerson> users= new ArrayList<>();
@@ -375,76 +187,9 @@ public class manageStudentsController {
         stage.setScene(scene);
         stage.showAndWait();
 
-        id.refresh();
-        name.refresh();
-        email.refresh();
-        avg.refresh();
-        className.refresh();
-        edit.refresh();
-
-        ObservableList<Integer> ids = FXCollections.observableArrayList();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        ObservableList<String> emails = FXCollections.observableArrayList();
-        ObservableList<Double> avgs = FXCollections.observableArrayList();
-        ObservableList<String> classNames = FXCollections.observableArrayList();
-        ObservableList<Button> edits = FXCollections.observableArrayList();
+        initialize();
 
 
-        List<Student> studentList = Student.getStudents();
-        Map<Integer, String> classNamesMap = Class.getAllClassesMap();
 
-
-        for (Student st : studentList) {
-            ids.add(st.userId);
-            if(st.fName==null)
-                names.add("Account Inactive");
-            else
-                names.add(st.fName + " " + st.lName);
-
-            if(st.mail==null)
-                emails.add("Account Inactive");
-            else
-                emails.add(st.mail);
-
-            if(st.classId==0)
-                classNames.add(" - ");
-            else
-                classNames.add(classNamesMap.get(st.classId));
-
-
-            if(st.getAverage()==0)
-                avgs.add(0.0);
-            else
-                avgs.add(st.getAverage());
-
-            if(st!=null) {
-                Button bt = new Button();
-                bt.setText("Edit");
-                bt.setUserData(st);
-                bt.setStyle("-fx-background-color: "+properties.mainColor+"; -fx-border-radius: 25px; -fx-background-radius: 25px");
-                bt.setPrefWidth(54);
-                bt.setPrefHeight(23);
-                bt.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        try {
-                            editButtonClick(bt);
-                        } catch (IOException | SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-                edits.add(bt);
-            }
-
-
-            id.setItems(ids);
-            name.setItems(names);
-            email.setItems(emails);
-            avg.setItems(avgs);
-            className.setItems(classNames);
-            edit.setItems(edits);
-
-        }
     }
 }

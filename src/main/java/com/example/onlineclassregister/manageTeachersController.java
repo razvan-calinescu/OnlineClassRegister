@@ -49,6 +49,8 @@ public class manageTeachersController {
     @FXML
     private void initialize() throws SQLException {
 
+        teachersTable.getItems().clear();
+
         Map<Integer, String> classNames= Class.getAllClassesMap();
         Map<Integer, String> subjectNames= Subject.initSubject();
 

@@ -8,6 +8,7 @@ module com.example.onlineclassregister {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
     requires commons.csv;
+    requires org.apache.pdfbox;
 
     opens com.example.onlineclassregister to javafx.fxml;
     exports com.example.onlineclassregister;

@@ -237,11 +237,6 @@ public class activateStudentController {
           //  ResultSet rs = stmt.executeQuery(stmtParentId);
             int parentId=-1;
 
-            /// Add parent id to students table
-//            while(rs.next())
-//            {
-//                parentId=rs.getInt("parent1Id");
-//            }
 
             String stmt4="UPDATE student Set parent1Id="+loggedUser.userId+1+" WHERE userId="+loggedUser.userId+";";
             Statement stmtParent= conn.createStatement();
